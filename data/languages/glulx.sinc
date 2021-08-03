@@ -246,7 +246,6 @@ JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 :^JnzVariant is inFuncBody=1 & opc=0x23; _2Operands; JnzVariant {
 }
 
-
 JeqVariant: "jeq_ret0" Operand0 Operand1 is operType2=0x0 & Operand0; Operand1 {
 	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	return [RA];

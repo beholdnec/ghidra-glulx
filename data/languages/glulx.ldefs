@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- See Relax specification: Ghidra/Framework/SoftwareModeling/data/languages/language_definitions.rxg -->
+
+<language_definitions>
+   <language processor="Glulx"
+            endian="big"
+            size="32"
+            variant="default"
+            version="1.0"
+            slafile="glulx.sla"
+            processorspec="glulx.pspec"
+            id="glulx:BE:32:default">
+    <description>Glulx Language Module</description>
+    <compiler name="default" spec="glulx.cspec" id="default"/>
+  </language>
+</language_definitions>

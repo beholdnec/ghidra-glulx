@@ -1,0 +1,33 @@
+# sleigh specification file for Skeleton Processor
+#   >> see docs/languages/sleigh.htm or sleigh.pdf for Sleigh syntax
+# Other language modules (see Ghidra/Processors) may provide better examples
+# when creating a new language module.
+
+define endian=big;
+define alignment=1;
+
+define space mem     type=ram_space      size=4  default;
+# The name "stack" cannot be used since it is reserved.
+define space vmstack   type=ram_space      size=4;
+define space register type=register_space size=4;
+
+define register offset=0x00 size=4 [ PC SP RA RAMSTART RET OUT ];
+
+# Define context bits (if defined, size must be multiple of 4-bytes)
+define register offset=0x100 size=8   contextreg;
+
+define context contextreg
+  inFuncLocals = (0,0)
+  inFuncBody   = (1,1)
+  operType0    = (4,7) noflow
+  operType1    = (8,11) noflow
+  operType2    = (12,15) noflow
+  operType3    = (16,19) noflow
+  operType4    = (20,23) noflow
+  operType5    = (24,27) noflow
+  operType6    = (28,31) noflow
+  operType7    = (32,35) noflow
+;
+
+# Include contents of glulx.sinc file
+@include "glulx.sinc"

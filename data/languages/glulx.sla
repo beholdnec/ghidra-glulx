@@ -1,4 +1,4 @@
-<sleigh version="3" bigendian="true" align="1" uniqbase="0x4e00">
+<sleigh version="3" bigendian="true" align="1" uniqbase="0x5080">
 <sourcefiles>
 <sourcefile name="glulx.sinc" index="0"/>
 </sourcefiles>
@@ -7,9 +7,10 @@
 <space_unique name="unique" index="2" bigendian="true" delay="0" size="4" physical="true"/>
 <space name="mem" index="3" bigendian="true" delay="1" size="4" physical="true"/>
 <space name="vmstack" index="4" bigendian="true" delay="1" size="4" physical="true"/>
-<space name="register" index="5" bigendian="true" delay="0" size="4" physical="true"/>
+<space name="local" index="5" bigendian="true" delay="1" size="4" physical="true"/>
+<space name="register" index="6" bigendian="true" delay="0" size="2" physical="true"/>
 </spaces>
-<symbol_table scopesize="113" symbolsize="328">
+<symbol_table scopesize="115" symbolsize="336">
 <scope id="0x0" parent="0x0"/>
 <scope id="0x1" parent="0x0"/>
 <scope id="0x2" parent="0x0"/>
@@ -123,6 +124,8 @@
 <scope id="0x6e" parent="0x0"/>
 <scope id="0x6f" parent="0x0"/>
 <scope id="0x70" parent="0x0"/>
+<scope id="0x71" parent="0x0"/>
+<scope id="0x72" parent="0x0"/>
 <subtable_sym_head name="instruction" id="0x0" scope="0x0"/>
 <start_sym_head name="inst_start" id="0x1" scope="0x0"/>
 <end_sym_head name="inst_next" id="0x2" scope="0x0"/>
@@ -409,49 +412,57 @@
 <operand_sym_head name="Operand2" id="0x11b" scope="0x64"/>
 <operand_sym_head name="_3Operands" id="0x11c" scope="0x64"/>
 <operand_sym_head name="Operand0" id="0x11d" scope="0x65"/>
-<operand_sym_head name="_1Operand" id="0x11e" scope="0x65"/>
-<operand_sym_head name="Operand0" id="0x11f" scope="0x66"/>
-<operand_sym_head name="_1Operand" id="0x120" scope="0x66"/>
-<operand_sym_head name="Operand0" id="0x121" scope="0x67"/>
-<operand_sym_head name="_1Operand" id="0x122" scope="0x67"/>
-<operand_sym_head name="Operand0" id="0x123" scope="0x68"/>
-<operand_sym_head name="_1Operand" id="0x124" scope="0x68"/>
-<operand_sym_head name="Operand0" id="0x125" scope="0x69"/>
-<operand_sym_head name="_1Operand" id="0x126" scope="0x69"/>
-<operand_sym_head name="Operand0" id="0x127" scope="0x6a"/>
-<operand_sym_head name="Operand1" id="0x128" scope="0x6a"/>
-<operand_sym_head name="SOperand2" id="0x129" scope="0x6a"/>
-<operand_sym_head name="_3Operands" id="0x12a" scope="0x6a"/>
-<operand_sym_head name="Operand0" id="0x12b" scope="0x6b"/>
-<operand_sym_head name="Operand1" id="0x12c" scope="0x6b"/>
-<operand_sym_head name="Operand2" id="0x12d" scope="0x6b"/>
-<operand_sym_head name="Operand3" id="0x12e" scope="0x6b"/>
-<operand_sym_head name="Operand4" id="0x12f" scope="0x6b"/>
-<operand_sym_head name="Operand5" id="0x130" scope="0x6b"/>
-<operand_sym_head name="Operand6" id="0x131" scope="0x6b"/>
-<operand_sym_head name="SOperand7" id="0x132" scope="0x6b"/>
-<operand_sym_head name="_8Operands" id="0x133" scope="0x6b"/>
-<operand_sym_head name="Operand0" id="0x134" scope="0x6c"/>
-<operand_sym_head name="SOperand1" id="0x135" scope="0x6c"/>
-<operand_sym_head name="_2Operands" id="0x136" scope="0x6c"/>
-<operand_sym_head name="Operand0" id="0x137" scope="0x6d"/>
-<operand_sym_head name="Operand1" id="0x138" scope="0x6d"/>
-<operand_sym_head name="SOperand2" id="0x139" scope="0x6d"/>
-<operand_sym_head name="_3Operands" id="0x13a" scope="0x6d"/>
-<operand_sym_head name="Operand0" id="0x13b" scope="0x6e"/>
-<operand_sym_head name="Operand1" id="0x13c" scope="0x6e"/>
-<operand_sym_head name="Operand2" id="0x13d" scope="0x6e"/>
-<operand_sym_head name="SOperand3" id="0x13e" scope="0x6e"/>
-<operand_sym_head name="_4Operands" id="0x13f" scope="0x6e"/>
-<operand_sym_head name="Operand0" id="0x140" scope="0x6f"/>
-<operand_sym_head name="Operand1" id="0x141" scope="0x6f"/>
-<operand_sym_head name="Operand2" id="0x142" scope="0x6f"/>
-<operand_sym_head name="Operand3" id="0x143" scope="0x6f"/>
-<operand_sym_head name="SOperand4" id="0x144" scope="0x6f"/>
-<operand_sym_head name="_5Operands" id="0x145" scope="0x6f"/>
-<operand_sym_head name="Operand0" id="0x146" scope="0x70"/>
-<operand_sym_head name="_1Operand" id="0x147" scope="0x70"/>
-<subtable_sym name="instruction" id="0x0" scope="0x0" numct="43">
+<operand_sym_head name="Operand1" id="0x11e" scope="0x65"/>
+<operand_sym_head name="Operand2" id="0x11f" scope="0x65"/>
+<operand_sym_head name="_3Operands" id="0x120" scope="0x65"/>
+<operand_sym_head name="Operand0" id="0x121" scope="0x66"/>
+<operand_sym_head name="Operand1" id="0x122" scope="0x66"/>
+<operand_sym_head name="Operand2" id="0x123" scope="0x66"/>
+<operand_sym_head name="_3Operands" id="0x124" scope="0x66"/>
+<operand_sym_head name="Operand0" id="0x125" scope="0x67"/>
+<operand_sym_head name="_1Operand" id="0x126" scope="0x67"/>
+<operand_sym_head name="Operand0" id="0x127" scope="0x68"/>
+<operand_sym_head name="_1Operand" id="0x128" scope="0x68"/>
+<operand_sym_head name="Operand0" id="0x129" scope="0x69"/>
+<operand_sym_head name="_1Operand" id="0x12a" scope="0x69"/>
+<operand_sym_head name="Operand0" id="0x12b" scope="0x6a"/>
+<operand_sym_head name="_1Operand" id="0x12c" scope="0x6a"/>
+<operand_sym_head name="Operand0" id="0x12d" scope="0x6b"/>
+<operand_sym_head name="_1Operand" id="0x12e" scope="0x6b"/>
+<operand_sym_head name="Operand0" id="0x12f" scope="0x6c"/>
+<operand_sym_head name="Operand1" id="0x130" scope="0x6c"/>
+<operand_sym_head name="SOperand2" id="0x131" scope="0x6c"/>
+<operand_sym_head name="_3Operands" id="0x132" scope="0x6c"/>
+<operand_sym_head name="Operand0" id="0x133" scope="0x6d"/>
+<operand_sym_head name="Operand1" id="0x134" scope="0x6d"/>
+<operand_sym_head name="Operand2" id="0x135" scope="0x6d"/>
+<operand_sym_head name="Operand3" id="0x136" scope="0x6d"/>
+<operand_sym_head name="Operand4" id="0x137" scope="0x6d"/>
+<operand_sym_head name="Operand5" id="0x138" scope="0x6d"/>
+<operand_sym_head name="Operand6" id="0x139" scope="0x6d"/>
+<operand_sym_head name="SOperand7" id="0x13a" scope="0x6d"/>
+<operand_sym_head name="_8Operands" id="0x13b" scope="0x6d"/>
+<operand_sym_head name="Operand0" id="0x13c" scope="0x6e"/>
+<operand_sym_head name="SOperand1" id="0x13d" scope="0x6e"/>
+<operand_sym_head name="_2Operands" id="0x13e" scope="0x6e"/>
+<operand_sym_head name="Operand0" id="0x13f" scope="0x6f"/>
+<operand_sym_head name="Operand1" id="0x140" scope="0x6f"/>
+<operand_sym_head name="SOperand2" id="0x141" scope="0x6f"/>
+<operand_sym_head name="_3Operands" id="0x142" scope="0x6f"/>
+<operand_sym_head name="Operand0" id="0x143" scope="0x70"/>
+<operand_sym_head name="Operand1" id="0x144" scope="0x70"/>
+<operand_sym_head name="Operand2" id="0x145" scope="0x70"/>
+<operand_sym_head name="SOperand3" id="0x146" scope="0x70"/>
+<operand_sym_head name="_4Operands" id="0x147" scope="0x70"/>
+<operand_sym_head name="Operand0" id="0x148" scope="0x71"/>
+<operand_sym_head name="Operand1" id="0x149" scope="0x71"/>
+<operand_sym_head name="Operand2" id="0x14a" scope="0x71"/>
+<operand_sym_head name="Operand3" id="0x14b" scope="0x71"/>
+<operand_sym_head name="SOperand4" id="0x14c" scope="0x71"/>
+<operand_sym_head name="_5Operands" id="0x14d" scope="0x71"/>
+<operand_sym_head name="Operand0" id="0x14e" scope="0x72"/>
+<operand_sym_head name="_1Operand" id="0x14f" scope="0x72"/>
+<subtable_sym name="instruction" id="0x0" scope="0x0" numct="45">
 <constructor parent="0x0" first="1" length="1" line="0:185">
 <print piece="funcC0"/>
 <context_op i="0" shift="30" mask="0x40000000" >
@@ -1252,9 +1263,85 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:406">
-<oper id="0x11e"/>
+<constructor parent="0x0" first="1" length="3" line="0:406">
+<oper id="0x120"/>
 <oper id="0x11d"/>
+<oper id="0x11e"/>
+<oper id="0x11f"/>
+<print piece="astores"/>
+<print piece=" "/>
+<opprint id="1"/>
+<print piece=" "/>
+<opprint id="2"/>
+<print piece=" "/>
+<opprint id="3"/>
+<construct_tpl>
+<null/><op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x3"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x2"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x1"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="INT_MULT"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4900"/><const_tpl type="handle" val="2" s="size"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x2"/><const_tpl type="handle" val="2" s="size"/></varnode_tpl>
+<varnode_tpl><const_tpl type="handle" val="2" s="space"/><const_tpl type="handle" val="2" s="offset"/><const_tpl type="handle" val="2" s="size"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="INT_ADD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4a00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<varnode_tpl><const_tpl type="handle" val="1" s="space"/><const_tpl type="handle" val="1" s="offset"/><const_tpl type="handle" val="1" s="size"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4900"/><const_tpl type="handle" val="2" s="size"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="STORE"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="mem"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4a00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<varnode_tpl><const_tpl type="handle" val="3" s="space"/><const_tpl type="handle" val="3" s="offset"/><const_tpl type="handle" val="3" s="size"/></varnode_tpl>
+</op_tpl>
+</construct_tpl>
+</constructor>
+<constructor parent="0x0" first="1" length="3" line="0:411">
+<oper id="0x124"/>
+<oper id="0x121"/>
+<oper id="0x122"/>
+<oper id="0x123"/>
+<print piece="astoreb"/>
+<print piece=" "/>
+<opprint id="1"/>
+<print piece=" "/>
+<opprint id="2"/>
+<print piece=" "/>
+<opprint id="3"/>
+<construct_tpl>
+<null/><op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x3"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x2"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="BUILD"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x1"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="INT_ADD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4b00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<varnode_tpl><const_tpl type="handle" val="1" s="space"/><const_tpl type="handle" val="1" s="offset"/><const_tpl type="handle" val="1" s="size"/></varnode_tpl>
+<varnode_tpl><const_tpl type="handle" val="2" s="space"/><const_tpl type="handle" val="2" s="offset"/><const_tpl type="handle" val="2" s="size"/></varnode_tpl>
+</op_tpl>
+<op_tpl code="STORE"><null/>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="mem"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4b00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<varnode_tpl><const_tpl type="handle" val="3" s="space"/><const_tpl type="handle" val="3" s="offset"/><const_tpl type="handle" val="3" s="size"/></varnode_tpl>
+</op_tpl>
+</construct_tpl>
+</constructor>
+<constructor parent="0x0" first="1" length="2" line="0:416">
+<oper id="0x126"/>
+<oper id="0x125"/>
 <print piece="streamchar"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1271,9 +1358,9 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:410">
-<oper id="0x120"/>
-<oper id="0x11f"/>
+<constructor parent="0x0" first="1" length="2" line="0:420">
+<oper id="0x128"/>
+<oper id="0x127"/>
 <print piece="streamnum"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1290,9 +1377,9 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:414">
-<oper id="0x122"/>
-<oper id="0x121"/>
+<constructor parent="0x0" first="1" length="2" line="0:424">
+<oper id="0x12a"/>
+<oper id="0x129"/>
 <print piece="streamstr"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1309,9 +1396,9 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:418">
-<oper id="0x124"/>
-<oper id="0x123"/>
+<constructor parent="0x0" first="1" length="3" line="0:428">
+<oper id="0x12c"/>
+<oper id="0x12b"/>
 <print piece="getmemsize"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1327,20 +1414,20 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:422">
+<constructor parent="0x0" first="1" length="2" line="0:432">
 <print piece="quit"/>
 <construct_tpl>
-<null/><op_tpl code="CALLOTHER"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4980"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<null/><op_tpl code="CALLOTHER"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4c00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x2"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="RETURN"><null/>
-<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4980"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4c00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:427">
-<oper id="0x126"/>
-<oper id="0x125"/>
+<constructor parent="0x0" first="1" length="3" line="0:437">
+<oper id="0x12e"/>
+<oper id="0x12d"/>
 <print piece="restoreundo"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1351,19 +1438,19 @@
 <op_tpl code="BUILD"><null/>
 <varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x1"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
-<op_tpl code="CALLOTHER"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4a80"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<op_tpl code="CALLOTHER"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4d00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x3"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="RETURN"><null/>
-<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4a80"/><const_tpl type="real" val="0x4"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4d00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:432">
-<oper id="0x12a"/>
-<oper id="0x127"/>
-<oper id="0x128"/>
-<oper id="0x129"/>
+<constructor parent="0x0" first="1" length="4" line="0:442">
+<oper id="0x132"/>
+<oper id="0x12f"/>
+<oper id="0x130"/>
+<oper id="0x131"/>
 <print piece="glk"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1391,16 +1478,16 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="6" line="0:437">
+<constructor parent="0x0" first="1" length="6" line="0:447">
+<oper id="0x13b"/>
 <oper id="0x133"/>
-<oper id="0x12b"/>
-<oper id="0x12c"/>
-<oper id="0x12d"/>
-<oper id="0x12e"/>
-<oper id="0x12f"/>
-<oper id="0x130"/>
-<oper id="0x131"/>
-<oper id="0x132"/>
+<oper id="0x134"/>
+<oper id="0x135"/>
+<oper id="0x136"/>
+<oper id="0x137"/>
+<oper id="0x138"/>
+<oper id="0x139"/>
+<oper id="0x13a"/>
 <print piece="binarysearch"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1458,10 +1545,10 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:442">
-<oper id="0x136"/>
-<oper id="0x134"/>
-<oper id="0x135"/>
+<constructor parent="0x0" first="1" length="3" line="0:452">
+<oper id="0x13e"/>
+<oper id="0x13c"/>
+<oper id="0x13d"/>
 <print piece="callf"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1483,11 +1570,11 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:447">
-<oper id="0x13a"/>
-<oper id="0x137"/>
-<oper id="0x138"/>
-<oper id="0x139"/>
+<constructor parent="0x0" first="1" length="4" line="0:457">
+<oper id="0x142"/>
+<oper id="0x13f"/>
+<oper id="0x140"/>
+<oper id="0x141"/>
 <print piece="callfi"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1515,12 +1602,12 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:452">
-<oper id="0x13f"/>
-<oper id="0x13b"/>
-<oper id="0x13c"/>
-<oper id="0x13d"/>
-<oper id="0x13e"/>
+<constructor parent="0x0" first="1" length="4" line="0:462">
+<oper id="0x147"/>
+<oper id="0x143"/>
+<oper id="0x144"/>
+<oper id="0x145"/>
+<oper id="0x146"/>
 <print piece="callfii"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1554,13 +1641,13 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="5" line="0:457">
-<oper id="0x145"/>
-<oper id="0x140"/>
-<oper id="0x141"/>
-<oper id="0x142"/>
-<oper id="0x143"/>
-<oper id="0x144"/>
+<constructor parent="0x0" first="1" length="5" line="0:467">
+<oper id="0x14d"/>
+<oper id="0x148"/>
+<oper id="0x149"/>
+<oper id="0x14a"/>
+<oper id="0x14b"/>
+<oper id="0x14c"/>
 <print piece="callfiii"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1600,9 +1687,9 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:462">
-<oper id="0x147"/>
-<oper id="0x146"/>
+<constructor parent="0x0" first="1" length="2" line="0:472">
+<oper id="0x14f"/>
+<oper id="0x14e"/>
 <print piece="return"/>
 <print piece=" "/>
 <opprint id="1"/>
@@ -1618,7 +1705,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<decision number="43" context="true" start="1" size="1">
+<decision number="45" context="true" start="1" size="1">
 <decision number="4" context="true" start="0" size="1">
 <decision number="2" context="false" start="7" size="1">
 <decision number="1" context="false" start="0" size="0">
@@ -1678,7 +1765,7 @@
 </pair>
 </decision>
 </decision>
-<decision number="39" context="false" start="0" size="8">
+<decision number="41" context="false" start="1" size="7">
 <decision number="1" context="false" start="0" size="0">
 <pair id="4">
 <combine_pat>
@@ -1695,7 +1782,390 @@
 </combine_pat>
 </pair>
 </decision>
+<decision number="9" context="false" start="9" size="7">
 <decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="35">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81020000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="36">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81200000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="37">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81260000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="38">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81300000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="39">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="5">
+  <mask_word mask="0x40008888" val="0x40000000"/>
+  <mask_word mask="0x70000000" val="0x0"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81510000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="40">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81600000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="41">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81610000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="42">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="3">
+  <mask_word mask="0x4000c000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81620000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="43">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="3">
+  <mask_word mask="0x40008e00" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="2">
+  <mask_word mask="0xffff0000" val="0x81630000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
 </decision>
 <decision number="0" context="false" start="0" size="0">
 </decision>
@@ -2058,7 +2528,7 @@
 </pair>
 </decision>
 <decision number="1" context="false" start="0" size="0">
-<pair id="42">
+<pair id="44">
 <combine_pat>
 <context_pat>
 <pat_block offset="0" nonzero="1">
@@ -2211,76 +2681,6 @@
 </combine_pat>
 </pair>
 </decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
 <decision number="1" context="false" start="0" size="0">
 <pair id="30">
 <combine_pat>
@@ -2291,7 +2691,7 @@
 </context_pat>
 <instruct_pat>
 <pat_block offset="0" nonzero="1">
-  <mask_word mask="0xff000000" val="0x70000000"/>
+  <mask_word mask="0xff000000" val="0x4d000000"/>
 </pat_block>
 </instruct_pat>
 </combine_pat>
@@ -2307,6 +2707,104 @@
 </context_pat>
 <instruct_pat>
 <pat_block offset="0" nonzero="1">
+  <mask_word mask="0xff000000" val="0x4e000000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="0" context="false" start="0" size="0">
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="32">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0xff000000" val="0x70000000"/>
+</pat_block>
+</instruct_pat>
+</combine_pat>
+</pair>
+</decision>
+<decision number="1" context="false" start="0" size="0">
+<pair id="33">
+<combine_pat>
+<context_pat>
+<pat_block offset="0" nonzero="1">
+  <mask_word mask="0x40000000" val="0x40000000"/>
+</pat_block>
+</context_pat>
+<instruct_pat>
+<pat_block offset="0" nonzero="1">
   <mask_word mask="0xff000000" val="0x71000000"/>
 </pat_block>
 </instruct_pat>
@@ -2314,7 +2812,7 @@
 </pair>
 </decision>
 <decision number="1" context="false" start="0" size="0">
-<pair id="32">
+<pair id="34">
 <combine_pat>
 <context_pat>
 <pat_block offset="0" nonzero="1">
@@ -2328,645 +2826,6 @@
 </instruct_pat>
 </combine_pat>
 </pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="9" context="false" start="9" size="7">
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="33">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="1">
-  <mask_word mask="0x40000000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81020000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="34">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="1">
-  <mask_word mask="0x40000000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81200000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="35">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="1">
-  <mask_word mask="0x40000000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81260000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="36">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="1">
-  <mask_word mask="0x40000000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81300000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="37">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="5">
-  <mask_word mask="0x40008888" val="0x40000000"/>
-  <mask_word mask="0x70000000" val="0x0"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81510000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="38">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="1">
-  <mask_word mask="0x40000000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81600000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="39">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="1">
-  <mask_word mask="0x40000000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81610000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="40">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="3">
-  <mask_word mask="0x4000c000" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81620000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="1" context="false" start="0" size="0">
-<pair id="41">
-<combine_pat>
-<context_pat>
-<pat_block offset="0" nonzero="3">
-  <mask_word mask="0x40008e00" val="0x40000000"/>
-</pat_block>
-</context_pat>
-<instruct_pat>
-<pat_block offset="0" nonzero="2">
-  <mask_word mask="0xffff0000" val="0x81630000"/>
-</pat_block>
-</instruct_pat>
-</combine_pat>
-</pair>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
-</decision>
-<decision number="0" context="false" start="0" size="0">
 </decision>
 <decision number="0" context="false" start="0" size="0">
 </decision>
@@ -3516,7 +3375,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x1000"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -3775,7 +3634,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x1480"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -3989,7 +3848,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="STORE"><null/>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0xa00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="register"/><const_tpl type="real" val="0x14"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
@@ -4191,7 +4050,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x1a80"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -4405,7 +4264,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="STORE"><null/>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0xa00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="register"/><const_tpl type="real" val="0x14"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
@@ -4607,7 +4466,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x2080"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -4731,7 +4590,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="STORE"><null/>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0xa00"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="register"/><const_tpl type="real" val="0x14"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
@@ -4871,7 +4730,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x2380"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -5080,7 +4939,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x2680"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -5249,7 +5108,7 @@
 <varnode_tpl><const_tpl type="handle" val="0" s="space"/><const_tpl type="handle" val="0" s="offset"/><const_tpl type="handle" val="0" s="size"/></varnode_tpl>
 </op_tpl>
 <op_tpl code="LOAD"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x2980"/><const_tpl type="real" val="0x4"/></varnode_tpl>
-<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="vmstack"/><const_tpl type="real" val="0x8"/></varnode_tpl>
+<varnode_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="spaceid" name="local"/><const_tpl type="real" val="0x8"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
 </op_tpl>
 </construct_tpl>
@@ -6588,134 +6447,158 @@
 <operand_sym name="_3Operands" id="0x11c" scope="0x64" subsym="0x3c" off="1" base="-1" minlen="2" index="0">
 <operand_exp index="0" table="0x0" ct="0x1d"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x11d" scope="0x65" subsym="0x54" off="2" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x11d" scope="0x65" subsym="0x54" off="3" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x1e"/>
 </operand_sym>
-<operand_sym name="_1Operand" id="0x11e" scope="0x65" subsym="0x37" off="1" base="-1" minlen="1" index="0">
+<operand_sym name="Operand1" id="0x11e" scope="0x65" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_exp index="2" table="0x0" ct="0x1e"/>
+</operand_sym>
+<operand_sym name="Operand2" id="0x11f" scope="0x65" subsym="0x68" off="0" base="2" minlen="0" index="3">
+<operand_exp index="3" table="0x0" ct="0x1e"/>
+</operand_sym>
+<operand_sym name="_3Operands" id="0x120" scope="0x65" subsym="0x3c" off="1" base="-1" minlen="2" index="0">
 <operand_exp index="0" table="0x0" ct="0x1e"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x11f" scope="0x66" subsym="0x54" off="2" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x121" scope="0x66" subsym="0x54" off="3" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x1f"/>
 </operand_sym>
-<operand_sym name="_1Operand" id="0x120" scope="0x66" subsym="0x37" off="1" base="-1" minlen="1" index="0">
+<operand_sym name="Operand1" id="0x122" scope="0x66" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_exp index="2" table="0x0" ct="0x1f"/>
+</operand_sym>
+<operand_sym name="Operand2" id="0x123" scope="0x66" subsym="0x68" off="0" base="2" minlen="0" index="3">
+<operand_exp index="3" table="0x0" ct="0x1f"/>
+</operand_sym>
+<operand_sym name="_3Operands" id="0x124" scope="0x66" subsym="0x3c" off="1" base="-1" minlen="2" index="0">
 <operand_exp index="0" table="0x0" ct="0x1f"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x121" scope="0x67" subsym="0x54" off="2" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x125" scope="0x67" subsym="0x54" off="2" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x20"/>
 </operand_sym>
-<operand_sym name="_1Operand" id="0x122" scope="0x67" subsym="0x37" off="1" base="-1" minlen="1" index="0">
+<operand_sym name="_1Operand" id="0x126" scope="0x67" subsym="0x37" off="1" base="-1" minlen="1" index="0">
 <operand_exp index="0" table="0x0" ct="0x20"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x123" scope="0x68" subsym="0x54" off="3" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x127" scope="0x68" subsym="0x54" off="2" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x21"/>
 </operand_sym>
-<operand_sym name="_1Operand" id="0x124" scope="0x68" subsym="0x37" off="2" base="-1" minlen="1" index="0">
+<operand_sym name="_1Operand" id="0x128" scope="0x68" subsym="0x37" off="1" base="-1" minlen="1" index="0">
 <operand_exp index="0" table="0x0" ct="0x21"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x125" scope="0x69" subsym="0x54" off="3" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x129" scope="0x69" subsym="0x54" off="2" base="-1" minlen="0" index="1">
+<operand_exp index="1" table="0x0" ct="0x22"/>
+</operand_sym>
+<operand_sym name="_1Operand" id="0x12a" scope="0x69" subsym="0x37" off="1" base="-1" minlen="1" index="0">
+<operand_exp index="0" table="0x0" ct="0x22"/>
+</operand_sym>
+<operand_sym name="Operand0" id="0x12b" scope="0x6a" subsym="0x54" off="3" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x23"/>
 </operand_sym>
-<operand_sym name="_1Operand" id="0x126" scope="0x69" subsym="0x37" off="2" base="-1" minlen="1" index="0">
+<operand_sym name="_1Operand" id="0x12c" scope="0x6a" subsym="0x37" off="2" base="-1" minlen="1" index="0">
 <operand_exp index="0" table="0x0" ct="0x23"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x127" scope="0x6a" subsym="0x54" off="4" base="-1" minlen="0" index="1">
-<operand_exp index="1" table="0x0" ct="0x24"/>
-</operand_sym>
-<operand_sym name="Operand1" id="0x128" scope="0x6a" subsym="0x5c" off="0" base="1" minlen="0" index="2">
-<operand_exp index="2" table="0x0" ct="0x24"/>
-</operand_sym>
-<operand_sym name="SOperand2" id="0x129" scope="0x6a" subsym="0x70" off="0" base="2" minlen="0" index="3">
-<operand_exp index="3" table="0x0" ct="0x24"/>
-</operand_sym>
-<operand_sym name="_3Operands" id="0x12a" scope="0x6a" subsym="0x3c" off="2" base="-1" minlen="2" index="0">
-<operand_exp index="0" table="0x0" ct="0x24"/>
-</operand_sym>
-<operand_sym name="Operand0" id="0x12b" scope="0x6b" subsym="0x54" off="6" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x12d" scope="0x6b" subsym="0x54" off="3" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x25"/>
 </operand_sym>
-<operand_sym name="Operand1" id="0x12c" scope="0x6b" subsym="0x5c" off="0" base="1" minlen="0" index="2">
-<operand_exp index="2" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="Operand2" id="0x12d" scope="0x6b" subsym="0x68" off="0" base="2" minlen="0" index="3">
-<operand_exp index="3" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="Operand3" id="0x12e" scope="0x6b" subsym="0x74" off="0" base="3" minlen="0" index="4">
-<operand_exp index="4" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="Operand4" id="0x12f" scope="0x6b" subsym="0x7b" off="0" base="4" minlen="0" index="5">
-<operand_exp index="5" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="Operand5" id="0x130" scope="0x6b" subsym="0x81" off="0" base="5" minlen="0" index="6">
-<operand_exp index="6" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="Operand6" id="0x131" scope="0x6b" subsym="0x86" off="0" base="6" minlen="0" index="7">
-<operand_exp index="7" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="SOperand7" id="0x132" scope="0x6b" subsym="0x8b" off="0" base="7" minlen="0" index="8">
-<operand_exp index="8" table="0x0" ct="0x25"/>
-</operand_sym>
-<operand_sym name="_8Operands" id="0x133" scope="0x6b" subsym="0x4b" off="2" base="-1" minlen="4" index="0">
+<operand_sym name="_1Operand" id="0x12e" scope="0x6b" subsym="0x37" off="2" base="-1" minlen="1" index="0">
 <operand_exp index="0" table="0x0" ct="0x25"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x134" scope="0x6c" subsym="0x54" off="3" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x12f" scope="0x6c" subsym="0x54" off="4" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x26"/>
 </operand_sym>
-<operand_sym name="SOperand1" id="0x135" scope="0x6c" subsym="0x64" off="0" base="1" minlen="0" index="2">
+<operand_sym name="Operand1" id="0x130" scope="0x6c" subsym="0x5c" off="0" base="1" minlen="0" index="2">
 <operand_exp index="2" table="0x0" ct="0x26"/>
 </operand_sym>
-<operand_sym name="_2Operands" id="0x136" scope="0x6c" subsym="0x39" off="2" base="-1" minlen="1" index="0">
+<operand_sym name="SOperand2" id="0x131" scope="0x6c" subsym="0x70" off="0" base="2" minlen="0" index="3">
+<operand_exp index="3" table="0x0" ct="0x26"/>
+</operand_sym>
+<operand_sym name="_3Operands" id="0x132" scope="0x6c" subsym="0x3c" off="2" base="-1" minlen="2" index="0">
 <operand_exp index="0" table="0x0" ct="0x26"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x137" scope="0x6d" subsym="0x54" off="4" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x133" scope="0x6d" subsym="0x54" off="6" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x27"/>
 </operand_sym>
-<operand_sym name="Operand1" id="0x138" scope="0x6d" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_sym name="Operand1" id="0x134" scope="0x6d" subsym="0x5c" off="0" base="1" minlen="0" index="2">
 <operand_exp index="2" table="0x0" ct="0x27"/>
 </operand_sym>
-<operand_sym name="SOperand2" id="0x139" scope="0x6d" subsym="0x70" off="0" base="2" minlen="0" index="3">
+<operand_sym name="Operand2" id="0x135" scope="0x6d" subsym="0x68" off="0" base="2" minlen="0" index="3">
 <operand_exp index="3" table="0x0" ct="0x27"/>
 </operand_sym>
-<operand_sym name="_3Operands" id="0x13a" scope="0x6d" subsym="0x3c" off="2" base="-1" minlen="2" index="0">
+<operand_sym name="Operand3" id="0x136" scope="0x6d" subsym="0x74" off="0" base="3" minlen="0" index="4">
+<operand_exp index="4" table="0x0" ct="0x27"/>
+</operand_sym>
+<operand_sym name="Operand4" id="0x137" scope="0x6d" subsym="0x7b" off="0" base="4" minlen="0" index="5">
+<operand_exp index="5" table="0x0" ct="0x27"/>
+</operand_sym>
+<operand_sym name="Operand5" id="0x138" scope="0x6d" subsym="0x81" off="0" base="5" minlen="0" index="6">
+<operand_exp index="6" table="0x0" ct="0x27"/>
+</operand_sym>
+<operand_sym name="Operand6" id="0x139" scope="0x6d" subsym="0x86" off="0" base="6" minlen="0" index="7">
+<operand_exp index="7" table="0x0" ct="0x27"/>
+</operand_sym>
+<operand_sym name="SOperand7" id="0x13a" scope="0x6d" subsym="0x8b" off="0" base="7" minlen="0" index="8">
+<operand_exp index="8" table="0x0" ct="0x27"/>
+</operand_sym>
+<operand_sym name="_8Operands" id="0x13b" scope="0x6d" subsym="0x4b" off="2" base="-1" minlen="4" index="0">
 <operand_exp index="0" table="0x0" ct="0x27"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x13b" scope="0x6e" subsym="0x54" off="4" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x13c" scope="0x6e" subsym="0x54" off="3" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x28"/>
 </operand_sym>
-<operand_sym name="Operand1" id="0x13c" scope="0x6e" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_sym name="SOperand1" id="0x13d" scope="0x6e" subsym="0x64" off="0" base="1" minlen="0" index="2">
 <operand_exp index="2" table="0x0" ct="0x28"/>
 </operand_sym>
-<operand_sym name="Operand2" id="0x13d" scope="0x6e" subsym="0x68" off="0" base="2" minlen="0" index="3">
-<operand_exp index="3" table="0x0" ct="0x28"/>
-</operand_sym>
-<operand_sym name="SOperand3" id="0x13e" scope="0x6e" subsym="0x79" off="0" base="3" minlen="0" index="4">
-<operand_exp index="4" table="0x0" ct="0x28"/>
-</operand_sym>
-<operand_sym name="_4Operands" id="0x13f" scope="0x6e" subsym="0x40" off="2" base="-1" minlen="2" index="0">
+<operand_sym name="_2Operands" id="0x13e" scope="0x6e" subsym="0x39" off="2" base="-1" minlen="1" index="0">
 <operand_exp index="0" table="0x0" ct="0x28"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x140" scope="0x6f" subsym="0x54" off="5" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x13f" scope="0x6f" subsym="0x54" off="4" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x29"/>
 </operand_sym>
-<operand_sym name="Operand1" id="0x141" scope="0x6f" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_sym name="Operand1" id="0x140" scope="0x6f" subsym="0x5c" off="0" base="1" minlen="0" index="2">
 <operand_exp index="2" table="0x0" ct="0x29"/>
 </operand_sym>
-<operand_sym name="Operand2" id="0x142" scope="0x6f" subsym="0x68" off="0" base="2" minlen="0" index="3">
+<operand_sym name="SOperand2" id="0x141" scope="0x6f" subsym="0x70" off="0" base="2" minlen="0" index="3">
 <operand_exp index="3" table="0x0" ct="0x29"/>
 </operand_sym>
-<operand_sym name="Operand3" id="0x143" scope="0x6f" subsym="0x74" off="0" base="3" minlen="0" index="4">
-<operand_exp index="4" table="0x0" ct="0x29"/>
-</operand_sym>
-<operand_sym name="SOperand4" id="0x144" scope="0x6f" subsym="0x80" off="0" base="4" minlen="0" index="5">
-<operand_exp index="5" table="0x0" ct="0x29"/>
-</operand_sym>
-<operand_sym name="_5Operands" id="0x145" scope="0x6f" subsym="0x45" off="2" base="-1" minlen="3" index="0">
+<operand_sym name="_3Operands" id="0x142" scope="0x6f" subsym="0x3c" off="2" base="-1" minlen="2" index="0">
 <operand_exp index="0" table="0x0" ct="0x29"/>
 </operand_sym>
-<operand_sym name="Operand0" id="0x146" scope="0x70" subsym="0x54" off="2" base="-1" minlen="0" index="1">
+<operand_sym name="Operand0" id="0x143" scope="0x70" subsym="0x54" off="4" base="-1" minlen="0" index="1">
 <operand_exp index="1" table="0x0" ct="0x2a"/>
 </operand_sym>
-<operand_sym name="_1Operand" id="0x147" scope="0x70" subsym="0x37" off="1" base="-1" minlen="1" index="0">
+<operand_sym name="Operand1" id="0x144" scope="0x70" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_exp index="2" table="0x0" ct="0x2a"/>
+</operand_sym>
+<operand_sym name="Operand2" id="0x145" scope="0x70" subsym="0x68" off="0" base="2" minlen="0" index="3">
+<operand_exp index="3" table="0x0" ct="0x2a"/>
+</operand_sym>
+<operand_sym name="SOperand3" id="0x146" scope="0x70" subsym="0x79" off="0" base="3" minlen="0" index="4">
+<operand_exp index="4" table="0x0" ct="0x2a"/>
+</operand_sym>
+<operand_sym name="_4Operands" id="0x147" scope="0x70" subsym="0x40" off="2" base="-1" minlen="2" index="0">
 <operand_exp index="0" table="0x0" ct="0x2a"/>
+</operand_sym>
+<operand_sym name="Operand0" id="0x148" scope="0x71" subsym="0x54" off="5" base="-1" minlen="0" index="1">
+<operand_exp index="1" table="0x0" ct="0x2b"/>
+</operand_sym>
+<operand_sym name="Operand1" id="0x149" scope="0x71" subsym="0x5c" off="0" base="1" minlen="0" index="2">
+<operand_exp index="2" table="0x0" ct="0x2b"/>
+</operand_sym>
+<operand_sym name="Operand2" id="0x14a" scope="0x71" subsym="0x68" off="0" base="2" minlen="0" index="3">
+<operand_exp index="3" table="0x0" ct="0x2b"/>
+</operand_sym>
+<operand_sym name="Operand3" id="0x14b" scope="0x71" subsym="0x74" off="0" base="3" minlen="0" index="4">
+<operand_exp index="4" table="0x0" ct="0x2b"/>
+</operand_sym>
+<operand_sym name="SOperand4" id="0x14c" scope="0x71" subsym="0x80" off="0" base="4" minlen="0" index="5">
+<operand_exp index="5" table="0x0" ct="0x2b"/>
+</operand_sym>
+<operand_sym name="_5Operands" id="0x14d" scope="0x71" subsym="0x45" off="2" base="-1" minlen="3" index="0">
+<operand_exp index="0" table="0x0" ct="0x2b"/>
+</operand_sym>
+<operand_sym name="Operand0" id="0x14e" scope="0x72" subsym="0x54" off="2" base="-1" minlen="0" index="1">
+<operand_exp index="1" table="0x0" ct="0x2c"/>
+</operand_sym>
+<operand_sym name="_1Operand" id="0x14f" scope="0x72" subsym="0x37" off="1" base="-1" minlen="1" index="0">
+<operand_exp index="0" table="0x0" ct="0x2c"/>
 </operand_sym>
 </symbol_table>
 </sleigh>

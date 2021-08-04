@@ -6,10 +6,11 @@
 define endian=big;
 define alignment=1;
 
-define space mem     type=ram_space      size=4  default;
+define space mem      type=ram_space      size=4 default;
 # The name "stack" cannot be used since it is reserved.
-define space vmstack   type=ram_space      size=4;
-define space register type=register_space size=4;
+define space vmstack  type=ram_space      size=4;
+define space local    type=ram_space      size=4;
+define space register type=register_space size=2;
 
 define register offset=0x00 size=4 [ PC SP RA RAMSTART RET OUT ];
 

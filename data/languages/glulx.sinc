@@ -42,6 +42,7 @@ define pcodeop glk;
 define pcodeop binarysearch;
 define pcodeop streamstr;
 define pcodeop streamchar;
+define pcodeop streamunichar;
 define pcodeop streamnum;
 define pcodeop _TODO_;
 
@@ -87,21 +88,21 @@ _4Operands: is opty0 & opty1; opty2 & opty3 [ operType0 = opty0; operType1 = opt
 _5Operands: is opty0 & opty1; opty2 & opty3; opty4 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; ] {}
 _8Operands: is opty0 & opty1; opty2 & opty3; opty4 & opty5; opty6 & opty7 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; operType5 = opty5; operType6 = opty6; operType7 = opty7; ] {}
 
-Operand0: "0"   is operType0=0x0         { local val:4; lopty0Sem(val); export val; }
+Operand0: "0"   is operType0=0x0        { local val:4; lopty0Sem(val); export val; }
 Operand0: Imm8  is operType0=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
 Operand0: Imm16 is operType0=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
 Operand0: Imm32 is operType0=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand0: "pop" is operType0=0x8         { local val:4; lopty8Sem(val); export val; }
+Operand0: "pop" is operType0=0x8        { local val:4; lopty8Sem(val); export val; }
 Operand0: Imm8  is operType0=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
 Operand0: Imm8  is operType0=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
 Operand0: Imm16 is operType0=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
 Operand0: Imm32 is operType0=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
 
-Operand1: "0"   is operType1=0x0         { local val:4; lopty0Sem(val); export val; }
+Operand1: "0"   is operType1=0x0        { local val:4; lopty0Sem(val); export val; }
 Operand1: Imm8  is operType1=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
 Operand1: Imm16 is operType1=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
 Operand1: Imm32 is operType1=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand1: "pop" is operType1=0x8         { local val:4; lopty8Sem(val); export val; }
+Operand1: "pop" is operType1=0x8        { local val:4; lopty8Sem(val); export val; }
 Operand1: Imm8  is operType1=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
 Operand1: Imm8  is operType1=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
 Operand1: Imm16 is operType1=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
@@ -149,6 +150,7 @@ Operand4: Imm8  is operType4=0x9 & Imm8  { local val:4; lopty9Sem(val, Imm8); ex
 
 SOperand4:        is operType4=0x0         { sopty0Sem(OUT); }
 SOperand4: "push" is operType4=0x8         { sopty8Sem(OUT); }
+SOperand4: Imm8   is operType4=0x9 & Imm8  { sopty9Sem(OUT, Imm8); }
 
 Operand5: "0"   is operType5=0x0         { local val:4; lopty0Sem(val); export val; }
 Operand5: Imm8  is operType5=0x1 & Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
@@ -289,41 +291,36 @@ JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 
 ### JEQ ###
 
-# type0
-JeqVariant: "jeq" Operand0 Operand1 "ret0" is operType2=0x0 & Operand0; Operand1 {
+JeqVariant: "jeq" Operand0 Operand1 "ret0" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x0 {
 	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 0;
 	return [RA];
 }
 
-# type1 ret1
-JeqVariant2: "ret1" is (Operand0; Operand1; BrTargetOperand2) & ret1=1 {
+JeqVariant: "jeq" Operand0 Operand1 "ret1" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x1 & ret1=1 {
 	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 1;
 	return [RA];
 }
 
-# type1 retx
-JeqVariant2: BrTargetOperand2 is (Operand0; Operand1; BrTargetOperand2) & ret1=0 {
-	if (Operand0 == Operand1) goto BrTargetOperand2;
-}
-
-# type1 ...
-JeqVariant: "jeq" Operand0 Operand1 JeqVariant2 is operType2=0x1 & (Operand0; Operand1; BrTargetOperand2) & JeqVariant2 {
-} 
-
-# general
 JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
 	if (Operand0 == Operand1) goto BrTargetOperand2;
 }
 
-# prelude
-:^JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; JeqVariant {
+:^JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; (Operand0; Operand1; BrTargetOperand2) & JeqVariant {
 }
 
 ### JNE ###
 
-# type0
-JneVariant: "jne" Operand0 Operand1 "ret0" is operType2=0x0 & Operand0; Operand1 {
-	if (!(Operand0 != Operand1)) goto inst_next;
+JneVariant: "jne" Operand0 Operand1 "ret0" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x0 {
+	if (!(Operand0 != Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 0;
+	return [RA];
+}
+
+JneVariant: "jne" Operand0 Operand1 "ret1" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x1 & ret1=1 {
+	if (!(Operand0 != Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 1;
 	return [RA];
 }
 
@@ -331,7 +328,7 @@ JneVariant: "jne" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTa
 	if (Operand0 != Operand1) goto BrTargetOperand2;
 }
 
-:^JneVariant is inFuncBody=1 & opc=0x25; _3Operands; JneVariant {
+:^JneVariant is inFuncBody=1 & opc=0x25; _3Operands; (Operand0; Operand1; BrTargetOperand2) & JneVariant {
 }
 
 ### JLT ###
@@ -425,6 +422,10 @@ JneVariant: "jne" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTa
 	streamstr(Operand0);
 }
 
+:streamunichar Operand0 is inFuncBody=1 & opc=0x73; _1Operand; Operand0 {
+	streamunichar(Operand0);
+}
+
 :getmemsize Operand0 is inFuncBody=1 & opc=0x81; opc=0x02; _1Operand; Operand0 {
 	_TODO_();
 }
@@ -470,5 +471,6 @@ JneVariant: "jne" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTa
 }
 
 :return Operand0 is inFuncBody=1 & opc=0x31; _1Operand; Operand0 {
+	RET = Operand0;
 	return [RA];
 }

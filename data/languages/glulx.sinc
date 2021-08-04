@@ -245,8 +245,15 @@ BrTargetOperand2: target is operType2=0x2; simm16 [ target = inst_next + simm16 
 
 ### JZ ###
 
-JzVariant: "jz" Operand0 "ret0" is operType1=0x0 & Operand0 {
+JzVariant: "jz" Operand0 "ret0" is (Operand0; BrTargetOperand1) & operType2=0x0 {
 	if (!(Operand0 == 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 0;
+	return [RA];
+}
+
+JzVariant: "jz" Operand0 "ret1" is (Operand0; BrTargetOperand1) & operType2=0x1 & ret1=1 {
+	if (!(Operand0 == 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 1;
 	return [RA];
 }
 
@@ -254,39 +261,28 @@ JzVariant: "jz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 	if (Operand0 == 0) goto BrTargetOperand1;
 }
 
-:^JzVariant is inFuncBody=1 & opc=0x22; _2Operands; JzVariant {
+:^JzVariant is inFuncBody=1 & opc=0x22; _2Operands; (Operand0; BrTargetOperand1) & JzVariant {
 }
 
 ### JNZ ###
 
-# type0
-JnzVariant: "jnz" Operand0 "ret0" is operType1=0x0 & Operand0 {
+JnzVariant: "jnz" Operand0 "ret0" is (Operand0; BrTargetOperand1) & operType2=0x0 {
 	if (!(Operand0 != 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 0;
 	return [RA];
 }
 
-# type1 ret1
-JnzVariant2: "ret1" is (Operand0; BrTargetOperand1) & ret1=1 {
+JnzVariant: "jnz" Operand0 "ret1" is (Operand0; BrTargetOperand1) & operType2=0x1 & ret1=1 {
 	if (!(Operand0 != 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 1;
 	return [RA];
 }
 
-# type1 retx 
-JnzVariant2: BrTargetOperand1 is (Operand0; BrTargetOperand1) & ret1=0 {
-	if (Operand0 != 0) goto BrTargetOperand1;
-}
-
-# type1 ...
-JnzVariant: "jnz" Operand0 JnzVariant2 is operType1=0x1 & (Operand0; BrTargetOperand1) & JnzVariant2 {
-}
-
-# general
 JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 	if (Operand0 != 0) goto BrTargetOperand1;
 }
 
-# prelude
-:^JnzVariant is inFuncBody=1 & opc=0x23; _2Operands; JnzVariant {
+:^JnzVariant is inFuncBody=1 & opc=0x23; _2Operands; (Operand0; BrTargetOperand1) & JnzVariant {
 }
 
 ### JEQ ###

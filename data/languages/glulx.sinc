@@ -253,14 +253,25 @@ JeqVariant: "jeq_ret0" Operand0 Operand1 is operType2=0x0 & Operand0; Operand1 {
 
 # TODO: jeq return 1 variant (see cragne.ulx @ 40aabe)
 
-JeqVariant: "jeq_ret1" Operand0 Operand1 is (operType2=0x1 & Operand0; Operand1; BrTargetOperand2) & ret1=1 {
-	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	return [RA];
+JeqVariant2: "jeq_ret1" is ret1=1 {
+	_TODO_();
 }
 
-JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 == Operand1) goto BrTargetOperand2;
+JeqVariant2: "jeq_non_ret1" is ret1=0 {
+	_TODO_();
 }
+
+JeqVariant: JeqVariant2 is Operand0; Operand1; BrTargetOperand2; JeqVariant2 {
+}
+
+#JeqVariant: "jeq_ret1" Operand0 Operand1 is operType2=0x1 & Operand0; Operand1; BrTargetOperand2; ret1=1 {
+#	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+#	return [RA];
+#}
+
+#JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
+#	if (Operand0 == Operand1) goto BrTargetOperand2;
+#}
 
 :^JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; JeqVariant {
 }

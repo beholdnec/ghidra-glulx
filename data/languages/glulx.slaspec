@@ -19,6 +19,7 @@ define register offset=0x100 size=8   contextreg;
 define context contextreg
   inFuncLocals = (0,0)
   inFuncBody   = (1,1)
+  ret1         = (2,2) noflow
   operType0    = (4,7) noflow
   operType1    = (8,11) noflow
   operType2    = (12,15) noflow

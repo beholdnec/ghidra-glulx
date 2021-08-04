@@ -163,8 +163,7 @@ BrTargetOperand0: "0_Br3" target is operType0=0x3 & imm32 [ target = inst_next +
 
 BrTargetOperand1: "1_Br1" target is operType1=0x1 & simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
 
-Ret1Operand2: "ret1" is operType2=0x1 & simm8=0x1 { }
-BrTargetOperand2: "2_Br1" target is operType2=0x1 & simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
+BrTargetOperand2: "2_Br1" target is operType2=0x1 & simm8 [ target = inst_next + simm8 - 2; ret1 = (simm8 - 0x1); ] { export *:1 target; }
 BrTargetOperand2: "2_Br2" target is operType2=0x2 & simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
 
 ################################################################
@@ -251,9 +250,24 @@ JeqVariant: "jeq_ret0" Operand0 Operand1 is operType2=0x0 & Operand0; Operand1 {
 	return [RA];
 }
 
-JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 == Operand1) goto BrTargetOperand2;
+JeqVariant2: "jeq_ret1" is ret1=0 {
+	#if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	#return [RA];
+	_TODO_();
 }
+
+JeqVariant2: "jeq" is ret1!=0 {
+	_TODO_();
+}
+
+JeqVariant: "JeqVariant" JeqVariant2 Operand0 Operand1 is Operand0; Operand1; BrTargetOperand2; JeqVariant2 {
+	#if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	#return [RA];
+}
+
+#JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
+	#if (Operand0 == Operand1) goto BrTargetOperand2;
+#}
 
 :^JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; JeqVariant {
 }

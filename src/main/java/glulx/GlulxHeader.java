@@ -45,7 +45,14 @@ public class GlulxHeader implements StructConverter {
 	public DataType toDataType() throws DuplicateNameException, IOException {
 		Structure structure = new StructureDataType("header", 0);
 		structure.add(STRING, 4, "magic", null);
-		// TODO: more structure
+		structure.add(DWORD, "version", null);
+		structure.add(POINTER, "ramstart", null);
+		structure.add(POINTER, "extstart", null);
+		structure.add(POINTER, "endmem", null);
+		structure.add(DWORD, "stacksize", null);
+		structure.add(POINTER, "startfunc", null);
+		structure.add(POINTER, "decodingTbl", null);
+		structure.add(DWORD, "checksum", null);
 		return structure;
 	}
 	
@@ -63,6 +70,10 @@ public class GlulxHeader implements StructConverter {
 	
 	public long getStartFunc() {
 		return startFunc;
+	}
+	
+	public long getDecodingTable() {
+		return decodingTbl;
 	}
 	
 	public long getEndMem() {

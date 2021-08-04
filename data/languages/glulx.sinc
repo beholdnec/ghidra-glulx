@@ -20,7 +20,6 @@ define token data8 (8)
    imm8		= (0,7)
    sign8	= (7,7)
    simm8	= (0,7) signed
-   brt_simm8 = (0,7) signed
 ;
 
 define token data16 (16)
@@ -164,9 +163,9 @@ BrTargetOperand0: "0_Br3" target is operType0=0x3 & imm32 [ target = inst_next +
 
 BrTargetOperand1: "1_Br1" target is operType1=0x1 & simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
 
-BrTargetOperand2: "2_Br1" target is operType2=0x1; brt_simm8=0x01 [ target = inst_next; ret1 = 1; ] { export *:1 target; }
-BrTargetOperand2: "2_Br1" target is operType2=0x1; brt_simm8 [ target = inst_next + brt_simm8 - 2; ret1 = 0; ] { export *:1 target; }
-BrTargetOperand2: "2_Br2" target is operType2=0x2; simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
+BrTargetOperand2: target is operType2=0x1; simm8=0x01 [ target = inst_next; ret1 = 1; ] { export *:1 target; }
+BrTargetOperand2: target is operType2=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { export *:1 target; }
+BrTargetOperand2: target is operType2=0x2; simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
 
 ################################################################
 
@@ -247,23 +246,21 @@ JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 :^JnzVariant is inFuncBody=1 & opc=0x23; _2Operands; JnzVariant {
 }
 
-JeqVariant: "jeq_ret0" Operand0 Operand1 is operType2=0x0 & Operand0; Operand1 {
+JeqVariant: "jeq" Operand0 Operand1 "ret0" is operType2=0x0 & Operand0; Operand1 {
 	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	return [RA];
 }
 
-# TODO: jeq return 1 variant (see cragne.ulx @ 40aabe)
-
-JeqVariant2: "ret1" is BrTargetOperand2 & ret1=1 {
-	if (!(CMP != 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+JeqVariant2: "ret1" is (Operand0; Operand1; BrTargetOperand2) & ret1=1 {
+	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	return [RA];
 }
 
-JeqVariant2: BrTargetOperand2 is BrTargetOperand2 & ret1=0 {
-	if (CMP != 0) goto BrTargetOperand2;
+JeqVariant2: BrTargetOperand2 is (Operand0; Operand1; BrTargetOperand2) & ret1=0 {
+	if (Operand0 == Operand1) goto BrTargetOperand2;
 }
 
-JeqVariant: "jeq_simm8" Operand0 Operand1 JeqVariant2 is operType2=0x1 & Operand0; Operand1; BrTargetOperand2 & JeqVariant2 {
+JeqVariant: "jeq" Operand0 Operand1 JeqVariant2 is operType2=0x1 & (Operand0; Operand1; BrTargetOperand2) & JeqVariant2 {
 } 
 
 JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {

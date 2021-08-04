@@ -11,7 +11,7 @@ define space mem     type=ram_space      size=4  default;
 define space vmstack   type=ram_space      size=4;
 define space register type=register_space size=4;
 
-define register offset=0x00 size=4 [ PC SP RA RAMSTART RET OUT CMP ];
+define register offset=0x00 size=4 [ PC SP RA RAMSTART RET OUT ];
 
 # Define context bits (if defined, size must be multiple of 4-bytes)
 define register offset=0x100 size=8   contextreg;

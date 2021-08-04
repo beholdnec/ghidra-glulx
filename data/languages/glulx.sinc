@@ -79,24 +79,24 @@ _5Operands: is opty0 & opty1; opty2 & opty3; opty4 [ operType0 = opty0; operType
 _8Operands: is opty0 & opty1; opty2 & opty3; opty4 & opty5; opty6 & opty7 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; operType5 = opty5; operType6 = opty6; operType7 = opty7; ] {}
 
 Operand0: "0"   is operType0=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand0: Imm8  is operType0=0x1 & Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand0: Imm16 is operType0=0x2 & Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand0: Imm32 is operType0=0x3 & Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
+Operand0: Imm8  is operType0=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
+Operand0: Imm16 is operType0=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
+Operand0: Imm32 is operType0=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
 Operand0: "pop" is operType0=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand0: Imm8  is operType0=0x9 & Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-Operand0: Imm8  is operType0=0xD & Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
-Operand0: Imm16 is operType0=0xE & Imm16 { local val:4; loptyESem(val, Imm16); export val; }
-Operand0: Imm32 is operType0=0xF & Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
+Operand0: Imm8  is operType0=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
+Operand0: Imm8  is operType0=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
+Operand0: Imm16 is operType0=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
+Operand0: Imm32 is operType0=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
 
 Operand1: "0"   is operType1=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand1: Imm8  is operType1=0x1 & Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand1: Imm16 is operType1=0x2 & Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand1: Imm32 is operType1=0x3 & Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
+Operand1: Imm8  is operType1=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
+Operand1: Imm16 is operType1=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
+Operand1: Imm32 is operType1=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
 Operand1: "pop" is operType1=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand1: Imm8  is operType1=0x9 & Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-Operand1: Imm8  is operType1=0xD & Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
-Operand1: Imm16 is operType1=0xE & Imm16 { local val:4; loptyESem(val, Imm16); export val; }
-Operand1: Imm32 is operType1=0xF & Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
+Operand1: Imm8  is operType1=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
+Operand1: Imm8  is operType1=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
+Operand1: Imm16 is operType1=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
+Operand1: Imm32 is operType1=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
 
 SOperand1:       is operType1=0x0         { sopty0Sem(OUT); }
 SOperand1: Imm8  is operType1=0x9 & Imm8  { sopty9Sem(OUT, Imm8); }
@@ -163,8 +163,9 @@ BrTargetOperand0: "0_Br3" target is operType0=0x3 & imm32 [ target = inst_next +
 
 BrTargetOperand1: "1_Br1" target is operType1=0x1 & simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
 
-BrTargetOperand2: "2_Br1" target is operType2=0x1 & simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
-BrTargetOperand2: "2_Br2" target is operType2=0x2 & simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
+BrTargetOperand2: "ret1" target is operType2=0x1; simm8=0x01 [ target = inst_next; ret1 = 1; ] { export *:1 target; }
+BrTargetOperand2: "2_Br1" target is operType2=0x1; simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
+BrTargetOperand2: "2_Br2" target is operType2=0x2; simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
 
 ################################################################
 
@@ -250,7 +251,12 @@ JeqVariant: "jeq_ret0" Operand0 Operand1 is operType2=0x0 & Operand0; Operand1 {
 	return [RA];
 }
 
-# TODO: jeq return 1 variant (see cragne.ulx @ 40aa34)
+# TODO: jeq return 1 variant (see cragne.ulx @ 40aabe)
+
+JeqVariant: "jeq_ret1" Operand0 Operand1 is (operType2=0x1 & Operand0; Operand1; BrTargetOperand2) & ret1=1 {
+	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	return [RA];
+}
 
 JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
 	if (Operand0 == Operand1) goto BrTargetOperand2;

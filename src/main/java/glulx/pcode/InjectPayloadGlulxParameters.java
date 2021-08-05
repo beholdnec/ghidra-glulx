@@ -103,18 +103,16 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 		}
 		
 		Address funcAddr = con.baseAddr;
-		// FIXME: baseAddr points to the instruction following the C0/C1 function header,
+		// XXX: baseAddr points to the instruction following the C0/C1 function header,
 		// not the function itself. Therefore we must use getFunctionContaining instead of
 		// getFunctionAt. I have no idea why this happens.
 		Function function = program.getFunctionManager().getFunctionContaining(funcAddr);
 		if (function == null) {
-			Msg.info(this, "Function at " + funcAddr.toString() + " was null.");
+			// Injection cannot be performed without a function.
 			return new PcodeOp[0];
 		}
 		
-		Msg.info(this, "injecting uponentry into function " + function.toString() + " at " + funcAddr.toString());
 		int numOps = function.getParameterCount();
-		Msg.info(this, "adding " + function.getParameterCount() + " parameters");
 		
 		PcodeOp[] resOps = new PcodeOp[1 + 3 * numOps];
 		int seqNum = 0;
@@ -128,6 +126,8 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 		Varnode tempLocation = temp4;
 		Varnode increment = four;
 		
+		// TODO: detect C0 or C1 function, fill all locals with 0's except those filled by params,
+		//       pay attention to size (which will almost always be 4)
 		for (int i = 0; i < numOps; i++) {
 			//copy value from parameterSpace to temporary
 			PcodeOp load = new PcodeOp(con.baseAddr, seqNum, PcodeOp.LOAD);

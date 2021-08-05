@@ -11,26 +11,28 @@
     <range space="mem" />
   </global>
   
+  <!-- JVM has a return_address register but does not declare a <returnaddress> in its cspec, so.... ok.
   <returnaddress>
   	<register name="RA" />
   </returnaddress>
+  -->
   
-  <!-- FIXME: use negative growth instead? positive growth seems to cause issues with param passing -->
-  <stackpointer register="SP" space="vmstack" growth="positive" />
+  <!-- XXX: Althrough Glulx uses a positive-growth stack, we declare "negative" here to avoid Ghidra issues. -->
+  <stackpointer register="SP" space="vmstack" growth="negative" />
   
   <default_proto>
   	<!-- TODO: find a way to decide call convention based on func type C0 or C1 -->
   	<!-- C1 (i.e. __localargs) is the most common -->
-	  <prototype name="__localargs" extrapop="unknown" stackshift="0">
+	  <prototype name="__localargs" extrapop="0" stackshift="0">
 	      <input>
 	        <pentry minsize="1" maxsize="500" align="4">
 	        	<!-- TODO: special handling for 1- and 2-byte locals? But those probably never occur. -->
 	        	<!-- The offset attribute cancels out maxsize="500", so arguments start at local:0. -->
-	          <addr offset="0xfffffe08" space="param" />
+	          <addr offset="0" space="param" />
 	        </pentry>
 	      </input>
 	      <output>
-	      	<pentry minsize="4" maxsize="4" align="4">
+	      	<pentry minsize="1" maxsize="4" align="4" extension="inttype">
 	      		<register name="RET" />
 	      	</pentry>
 	      </output>
@@ -38,6 +40,10 @@
 	        <register name="SP"/>
 	      </unaffected>
 	      <pcode inject="uponentry" dynamic="true" /> <!-- Injected dynamically by PcodeInjectLibraryGlulx -->
+	      <!-- XXX: this is meaningless, but declare a localrange to hopefully avoid issues -->
+        <localrange>
+          <range space="param" first="0x00010000" last="0x00010010"/>
+        </localrange>
 	  </prototype>
 	</default_proto>
 	

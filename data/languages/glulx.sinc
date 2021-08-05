@@ -286,51 +286,36 @@ JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 :^JnzVariant is inFuncBody=1 & opc=0x23; _2Operands; (Operand0; BrTargetOperand1) & JnzVariant {
 }
 
-### JEQ ###
-
-JeqVariant: "ret0" is BrTargetOperand2 & operType2=0x0 {
+BranchVariantOper2: "ret0" is BrTargetOperand2 & operType2=0x0 {
 	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 0;
 	return [RA];
 }
 
-JeqVariant: "ret1" is BrTargetOperand2 & operType2=0x1 & ret1=1 {
+BranchVariantOper2: "ret1" is BrTargetOperand2 & operType2=0x1 & ret1=1 {
 	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 1;
 	return [RA];
 }
 
-JeqVariant: BrTargetOperand2 is BrTargetOperand2 {
+BranchVariantOper2: BrTargetOperand2 is BrTargetOperand2 {
 	if (CMP) goto BrTargetOperand2;
 }
 
-:jeq Operand0 Operand1 JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2 & JeqVariant {
+# FIXME: Using BrTargetOperand2 in both jeq and BranchVariantOper2 will cause its p-code to be emitted twice!
+#        This can cause issues if the p-code has side-effects such as push and pop!
+:jeq Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
 	CMP = Operand0 == Operand1;
-	build JeqVariant;
+	build BranchVariantOper2;
 }
 
-### JNE ###
-
-JneVariant: "ret0" is BrTargetOperand2 & operType2=0x0 {
-	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 0;
-	return [RA];
-}
-
-JneVariant: "ret1" is BrTargetOperand2 & operType2=0x1 & ret1=1 {
-	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 1;
-	return [RA];
-}
-
-JneVariant: BrTargetOperand2 is BrTargetOperand2 {
-	if (CMP) goto BrTargetOperand2;
-}
-
-:jne Operand0 Operand1 JneVariant is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2 & JneVariant {
+:jne Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
 	CMP = Operand0 != Operand1;
-	build JneVariant;
+	build BranchVariantOper2;
 }
+
 
 ### JLT ###
 

@@ -3,5 +3,9 @@
 <!-- See Relax specification: Ghidra/Framework/SoftwareModeling/data/languages/processor_spec.rxg -->
 
 <processor_spec>
-  <programcounter register="PC"/>
+	<properties>
+		<property key="pcodeInjectLibraryClass" value="glulx.pcode.PcodeInjectLibraryGlulx" />
+	</properties>
+	
+	<programcounter register="PC"/>
 </processor_spec>

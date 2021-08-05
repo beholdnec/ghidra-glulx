@@ -15,13 +15,18 @@
   	<register name="RA" />
   </returnaddress>
   
+  <!-- FIXME: use negative growth instead? positive growth seems to cause issues with param passing -->
   <stackpointer register="SP" space="vmstack" growth="positive" />
   
   <default_proto>
-	  <prototype name="__stdcall" extrapop="0" stackshift="0">
+  	<!-- TODO: find a way to decide call convention based on func type C0 or C1 -->
+  	<!-- C1 (i.e. __localargs) is the most common -->
+	  <prototype name="__localargs" extrapop="unknown" stackshift="0">
 	      <input>
 	        <pentry minsize="1" maxsize="500" align="4">
-	          <addr offset="0" space="stack" />
+	        	<!-- TODO: special handling for 1- and 2-byte locals? But those probably never occur. -->
+	        	<!-- The offset attribute cancels out maxsize="500", so arguments start at local:0. -->
+	          <addr offset="0xfffffe08" space="param" />
 	        </pentry>
 	      </input>
 	      <output>
@@ -32,6 +37,7 @@
 	      <unaffected>
 	        <register name="SP"/>
 	      </unaffected>
+	      <pcode inject="uponentry" dynamic="true" /> <!-- Injected dynamically by PcodeInjectLibraryGlulx -->
 	  </prototype>
 	</default_proto>
 	

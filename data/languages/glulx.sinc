@@ -101,6 +101,10 @@ Operand0: Imm8  is operType0=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); exp
 Operand0: Imm16 is operType0=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
 Operand0: Imm32 is operType0=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
 
+SOperand0:        is operType0=0x0         { sopty0Sem(OUT); }
+SOperand0: "push" is operType0=0x8         { sopty8Sem(OUT); }
+SOperand0: Imm8   is operType0=0x9 & Imm8  { sopty9Sem(OUT, Imm8); }
+
 Operand1: "0"   is operType1=0x0        { local val:4; lopty0Sem(val); export val; }
 Operand1: Imm8  is operType1=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
 Operand1: Imm16 is operType1=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }

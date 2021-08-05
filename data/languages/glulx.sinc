@@ -39,6 +39,7 @@ define pcodeop fncalln;
 define pcodeop quit;
 define pcodeop restoreundo;
 define pcodeop glk;
+define pcodeop getmemsize;
 define pcodeop binarysearch;
 define pcodeop streamstr;
 define pcodeop streamchar;
@@ -80,6 +81,8 @@ macro soptyDSem(out, addr8) { local addr:4 = RAMSTART + zext(addr8); *:4 addr = 
 Imm8: imm8 is imm8 { export *[const]:1 imm8; }
 Imm16: imm16 is imm16 { export *[const]:2 imm16; }
 Imm32: imm32 is imm32 { export *[const]:4 imm32; }
+
+Local8: imm8 is imm8 { export *[local]:4 imm8; }
 
 _1Operand:  is opty0 [ operType0 = opty0; ] {}
 _2Operands: is opty0 & opty1 [ operType0 = opty0; operType1 = opty1; ] {}
@@ -168,12 +171,14 @@ Operand6: Imm8  is operType6=0x9 & Imm8  { local val:4; lopty9Sem(val, Imm8); ex
 
 SOperand7:        is operType7=0x0         { sopty0Sem(OUT); }
 SOperand7: "push" is operType7=0x8         { sopty8Sem(OUT); }
+SOperand7: Imm8   is operType7=0x9 & Imm8  { sopty9Sem(OUT, Imm8); }
 
 BrTargetOperand0: "***ERROR***" is operType0=0x1; simm8=0x01 [ ret1 = 1; ] { export *:1 inst_next; }
 BrTargetOperand0: target is operType0=0x1 & simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { export *:1 target; }
 BrTargetOperand0: target is operType0=0x2 & simm16 [ target = inst_next + simm16 - 2; ] {export *:1 target; }
 BrTargetOperand0: target is operType0=0x3 & imm32 [ target = inst_next + imm32 - 2; ] {export *:1 target; }
 
+BrTargetOperand1: "***ERROR***" is operType1=0x0 { export *:1 inst_next; }
 BrTargetOperand1: "***ERROR***" is operType1=0x1; simm8=0x01 [ ret1 = 1; ] { export *:1 inst_next; }
 BrTargetOperand1: target is operType1=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { export *:1 target; }
 BrTargetOperand1: target is operType1=0x2; simm16 [ target = inst_next + simm16 - 2; ] {export *:1 target; }
@@ -241,13 +246,13 @@ funcLocals: imm16 funcLocals is imm16; funcLocals {
 }
 
 # See FIXME below
-BranchVariantOper1: "ret0" is BrTargetOperand1 & operType2=0x0 {
+BranchVariantOper1: "ret0" is BrTargetOperand1 & operType1=0x0 {
 	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 0;
 	return [RA];
 }
 
-BranchVariantOper1: "ret1" is BrTargetOperand1 & operType2=0x1 & ret1=1 {
+BranchVariantOper1: "ret1" is BrTargetOperand1 & operType1=0x1 & ret1=1 {
 	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 1;
 	return [RA];
@@ -399,8 +404,9 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	streamunichar(Operand0);
 }
 
-:getmemsize Operand0 is inFuncBody=1 & opc=0x81; opc=0x02; _1Operand; Operand0 {
-	_TODO_();
+:getmemsize SOperand0 is inFuncBody=1 & opc=0x81; opc=0x02; _1Operand; SOperand0 {
+	OUT = getmemsize();
+	build SOperand0;
 }
 
 :quit is inFuncBody=1 & opc=0x81; opc=0x20 {

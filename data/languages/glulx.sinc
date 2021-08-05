@@ -124,7 +124,7 @@ Operand2: Imm8  is operType2=0xD & Imm8  { local val:4; loptyDSem(val, Imm8); ex
 Operand2: Imm16 is operType2=0xE & Imm16 { local val:4; loptyESem(val, Imm16); export val; }
 Operand2: Imm32 is operType2=0xF & Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
 
-SOperand2:        is operType2=0x0 { }
+SOperand2:        is operType2=0x0         { }
 SOperand2: "push" is operType2=0x8         { sopty8Sem(OUT); }
 SOperand2: Imm8   is operType2=0x9 & Imm8  { sopty9Sem(OUT, Imm8); }
 SOperand2: Imm8   is operType2=0xD & Imm8  { soptyDSem(OUT, Imm8); }
@@ -171,29 +171,30 @@ SOperand7: "push" is operType7=0x8         { sopty8Sem(OUT); }
 
 BrTargetOperand0: "***ERROR***" is operType0=0x1; simm8=0x01 [ ret1 = 1; ] { export *:1 inst_next; }
 BrTargetOperand0: target is operType0=0x1 & simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { export *:1 target; }
-BrTargetOperand0: target is operType0=0x2 & simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
-BrTargetOperand0: target is operType0=0x3 & imm32 [ target = inst_next + imm32 - 2; ] { export *:1 target; }
+BrTargetOperand0: target is operType0=0x2 & simm16 [ target = inst_next + simm16 - 2; ] {export *:1 target; }
+BrTargetOperand0: target is operType0=0x3 & imm32 [ target = inst_next + imm32 - 2; ] {export *:1 target; }
 
 BrTargetOperand1: "***ERROR***" is operType1=0x1; simm8=0x01 [ ret1 = 1; ] { export *:1 inst_next; }
 BrTargetOperand1: target is operType1=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { export *:1 target; }
-BrTargetOperand1: target is operType1=0x2; simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
+BrTargetOperand1: target is operType1=0x2; simm16 [ target = inst_next + simm16 - 2; ] {export *:1 target; }
 
+BrTargetOperand2: "***ERROR***" is operType2=0x0 { export *:1 inst_next; }
 BrTargetOperand2: "***ERROR***" is operType2=0x1; simm8=0x01 [ ret1 = 1; ] { export *:1 inst_next; }
-BrTargetOperand2: target is operType2=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { export *:1 target; }
-BrTargetOperand2: target is operType2=0x2; simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
+BrTargetOperand2: target is operType2=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] {export *:1 target; }
+BrTargetOperand2: target is operType2=0x2; simm16 [ target = inst_next + simm16 - 2; ] {export *:1 target; }
 
 ################################################################
 
-:funcC0 is inFuncBody=0 & inFuncLocals=0 & opc=0xC0 [ inFuncBody=0; inFuncLocals=1; globalset(inst_next, inFuncLocals); globalset(inst_next, inFuncBody);  ] {
+funcLocals: is imm16=0x0000 [ inFuncBody=1; globalset(inst_next, inFuncBody); ] {
 }
 
-:funcC1 is inFuncBody=0 & inFuncLocals=0 & opc=0xC1 [ inFuncBody=0; inFuncLocals=1; globalset(inst_next, inFuncLocals); globalset(inst_next, inFuncBody);  ] {
+funcLocals: imm16 funcLocals is imm16; funcLocals {
 }
 
-:funcLocalEnd is inFuncBody=0 & inFuncLocals=1 & imm16=0 [ inFuncLocals=0; inFuncBody=1; globalset(inst_next, inFuncLocals); globalset(inst_next, inFuncBody); ] {
+:funcC0 funcLocals is inFuncBody=0 & opc=0xC0; funcLocals {
 }
 
-:funcLocal imm16 is inFuncBody=0 & inFuncLocals=1 & imm16 [ inFuncLocals=1; inFuncBody=0; globalset(inst_next, inFuncLocals); globalset(inst_next, inFuncBody);  ] {
+:funcC1 funcLocals is inFuncBody=0 & opc=0xC1; funcLocals {
 }
 
 :nop is inFuncBody=1 & opc=0x00 {
@@ -287,44 +288,48 @@ JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
 
 ### JEQ ###
 
-JeqVariant: "jeq" Operand0 Operand1 "ret0" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x0 {
-	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+JeqVariant: "ret0" is BrTargetOperand2 & operType2=0x0 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 0;
 	return [RA];
 }
 
-JeqVariant: "jeq" Operand0 Operand1 "ret1" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x1 & ret1=1 {
-	if (!(Operand0 == Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+JeqVariant: "ret1" is BrTargetOperand2 & operType2=0x1 & ret1=1 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 1;
 	return [RA];
 }
 
-JeqVariant: "jeq" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 == Operand1) goto BrTargetOperand2;
+JeqVariant: BrTargetOperand2 is BrTargetOperand2 {
+	if (CMP) goto BrTargetOperand2;
 }
 
-:^JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; (Operand0; Operand1; BrTargetOperand2) & JeqVariant {
+:jeq Operand0 Operand1 JeqVariant is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2 & JeqVariant {
+	CMP = Operand0 == Operand1;
+	build JeqVariant;
 }
 
 ### JNE ###
 
-JneVariant: "jne" Operand0 Operand1 "ret0" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x0 {
-	if (!(Operand0 != Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+JneVariant: "ret0" is BrTargetOperand2 & operType2=0x0 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 0;
 	return [RA];
 }
 
-JneVariant: "jne" Operand0 Operand1 "ret1" is (Operand0; Operand1; BrTargetOperand2) & operType2=0x1 & ret1=1 {
-	if (!(Operand0 != Operand1)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+JneVariant: "ret1" is BrTargetOperand2 & operType2=0x1 & ret1=1 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 1;
 	return [RA];
 }
 
-JneVariant: "jne" Operand0 Operand1 BrTargetOperand2 is Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 != Operand1) goto BrTargetOperand2;
+JneVariant: BrTargetOperand2 is BrTargetOperand2 {
+	if (CMP) goto BrTargetOperand2;
 }
 
-:^JneVariant is inFuncBody=1 & opc=0x25; _3Operands; (Operand0; Operand1; BrTargetOperand2) & JneVariant {
+:jne Operand0 Operand1 JneVariant is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2 & JneVariant {
+	CMP = Operand0 != Operand1;
+	build JneVariant;
 }
 
 ### JLT ###

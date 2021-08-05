@@ -240,50 +240,21 @@ funcLocals: imm16 funcLocals is imm16; funcLocals {
 	build SOperand2;
 }
 
-:jump BrTargetOperand0 is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0 {
-	goto BrTargetOperand0;
-}
-
-### JZ ###
-
-JzVariant: "jz" Operand0 "ret0" is (Operand0; BrTargetOperand1) & operType2=0x0 {
-	if (!(Operand0 == 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+# See FIXME below
+BranchVariantOper1: "ret0" is BrTargetOperand1 & operType2=0x0 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 0;
 	return [RA];
 }
 
-JzVariant: "jz" Operand0 "ret1" is (Operand0; BrTargetOperand1) & operType2=0x1 & ret1=1 {
-	if (!(Operand0 == 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+BranchVariantOper1: "ret1" is BrTargetOperand1 & operType2=0x1 & ret1=1 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 1;
 	return [RA];
 }
 
-JzVariant: "jz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
-	if (Operand0 == 0) goto BrTargetOperand1;
-}
-
-:^JzVariant is inFuncBody=1 & opc=0x22; _2Operands; (Operand0; BrTargetOperand1) & JzVariant {
-}
-
-### JNZ ###
-
-JnzVariant: "jnz" Operand0 "ret0" is (Operand0; BrTargetOperand1) & operType2=0x0 {
-	if (!(Operand0 != 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 0;
-	return [RA];
-}
-
-JnzVariant: "jnz" Operand0 "ret1" is (Operand0; BrTargetOperand1) & operType2=0x1 & ret1=1 {
-	if (!(Operand0 != 0)) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 1;
-	return [RA];
-}
-
-JnzVariant: "jnz" Operand0 BrTargetOperand1 is Operand0; BrTargetOperand1 {
-	if (Operand0 != 0) goto BrTargetOperand1;
-}
-
-:^JnzVariant is inFuncBody=1 & opc=0x23; _2Operands; (Operand0; BrTargetOperand1) & JnzVariant {
+BranchVariantOper1: BrTargetOperand1 is BrTargetOperand1 {
+	if (CMP) goto BrTargetOperand1;
 }
 
 BranchVariantOper2: "ret0" is BrTargetOperand2 & operType2=0x0 {
@@ -302,8 +273,25 @@ BranchVariantOper2: BrTargetOperand2 is BrTargetOperand2 {
 	if (CMP) goto BrTargetOperand2;
 }
 
-# FIXME: Using BrTargetOperand2 in both jeq and BranchVariantOper2 will cause its p-code to be emitted twice!
-#        This can cause issues if the p-code has side-effects such as push and pop!
+:jump BrTargetOperand0 is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0 {
+	goto BrTargetOperand0;
+}
+
+# FIXME: Using BrTargetOperand1 in both jz and BranchVariantOper1 will cause its p-code to be emitted twice!
+#        This can cause incorrect decompilation if the p-code has side-effects such as push and pop.
+#        The same issue occurs in all branch instructions.
+:jz Operand0 BranchVariantOper1
+is inFuncBody=1 & opc=0x22; _2Operands; Operand0; BrTargetOperand1 & BranchVariantOper1 {
+	CMP = Operand0 == 0;
+	build BranchVariantOper1;
+}
+
+:jnz Operand0 BranchVariantOper1
+is inFuncBody=1 & opc=0x23; _2Operands; Operand0; BrTargetOperand1 & BranchVariantOper1 {
+	CMP = Operand0 != 0;
+	build BranchVariantOper1;
+}
+
 :jeq Operand0 Operand1 BranchVariantOper2
 is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
 	CMP = Operand0 == Operand1;
@@ -316,35 +304,34 @@ is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	build BranchVariantOper2;
 }
 
-
-### JLT ###
-
-:jlt Operand0 Operand1 BrTargetOperand2 is inFuncBody=1 & opc=0x26; _3Operands; Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 s< Operand1) goto BrTargetOperand2;
+:jlt Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x26; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
+	CMP = Operand0 s< Operand1;
+	build BranchVariantOper2;
 }
 
-### JGE ###
-
-:jge Operand0 Operand1 BrTargetOperand2 is inFuncBody=1 & opc=0x27; _3Operands; Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 s>= Operand1) goto BrTargetOperand2;
+:jge Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x27; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
+	CMP = Operand0 s>= Operand1;
+	build BranchVariantOper2;
 }
 
-### JGT ###
-
-:jgt Operand0 Operand1 BrTargetOperand2 is inFuncBody=1 & opc=0x28; _3Operands; Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 s> Operand1) goto BrTargetOperand2;
+:jgt Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x28; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
+	CMP = Operand0 s> Operand1;
+	build BranchVariantOper2;
 }
 
-### JLE ###
-
-:jle Operand0 Operand1 BrTargetOperand2 is inFuncBody=1 & opc=0x29; _3Operands; Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 s<= Operand1) goto BrTargetOperand2;
+:jle Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x29; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
+	CMP = Operand0 s<= Operand1;
+	build BranchVariantOper2;
 }
 
-### JGEU ###
-
-:jgeu Operand0 Operand1 BrTargetOperand2 is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 {
-	if (Operand0 >= Operand1) goto BrTargetOperand2;
+:jgeu Operand0 Operand1 BranchVariantOper2
+is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & BranchVariantOper2 {
+	CMP = Operand0 >= Operand1;
+	build BranchVariantOper2;
 }
 
 :call Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x30; _3Operands; Operand0; Operand1; SOperand2 {

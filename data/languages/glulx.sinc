@@ -91,6 +91,10 @@ _4Operands: is opty0 & opty1; opty2 & opty3 [ operType0 = opty0; operType1 = opt
 _5Operands: is opty0 & opty1; opty2 & opty3; opty4 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; ] {}
 _8Operands: is opty0 & opty1; opty2 & opty3; opty4 & opty5; opty6 & opty7 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; operType5 = opty5; operType6 = opty6; operType7 = opty7; ] {}
 
+POperand0: "0"   is operType0=0x0        { local ptr:4; lopty0Sem(ptr); export *:1 ptr; }
+POperand0: imm32 is operType0=0x3; imm32 { local ptr:4; lopty3Sem(ptr, imm32); export *:1 ptr; }
+POperand0: Imm8  is operType0=0x9; Imm8  { local ptr:4; lopty9Sem(ptr, Imm8); export *:1 ptr; }
+
 Operand0: "0"   is operType0=0x0        { local val:4; lopty0Sem(val); export val; }
 Operand0: Imm8  is operType0=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
 Operand0: Imm16 is operType0=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
@@ -343,8 +347,8 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	build BranchVariantOper2;
 }
 
-:call Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x30; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = fncalln(Operand0, Operand1);
+:call POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x30; _3Operands; POperand0; Operand1; SOperand2 {
+	OUT = fncalln(POperand0, Operand1);
 	build SOperand2;
 }
 
@@ -433,23 +437,23 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	build SOperand7;
 }
 
-:callf Operand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; Operand0; SOperand1 {
-	OUT = fncall(Operand0);
+:callf POperand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; POperand0; SOperand1 {
+	OUT = fncall(POperand0);
 	build SOperand1;
 }
 
-:callfi Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = fncall(Operand0, Operand1);
+:callfi POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; POperand0; Operand1; SOperand2 {
+	OUT = fncall(POperand0, Operand1);
 	build SOperand2;
 }
 
-:callfii Operand0 Operand1 Operand2 SOperand3 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; Operand0; Operand1; Operand2; SOperand3 {
-	OUT = fncall(Operand0, Operand1, Operand2);
+:callfii POperand0 Operand1 Operand2 SOperand3 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; POperand0; Operand1; Operand2; SOperand3 {
+	OUT = fncall(POperand0, Operand1, Operand2);
 	build SOperand3;
 }
 
-:callfiii Operand0 Operand1 Operand2 Operand3 SOperand4 is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; Operand0; Operand1; Operand2; Operand3; SOperand4 {
-	OUT = fncall(Operand0, Operand1, Operand2, Operand3);
+:callfiii POperand0 Operand1 Operand2 Operand3 SOperand4 is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; POperand0; Operand1; Operand2; Operand3; SOperand4 {
+	OUT = fncall(POperand0, Operand1, Operand2, Operand3);
 	build SOperand4;
 }
 

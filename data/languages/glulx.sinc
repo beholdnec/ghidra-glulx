@@ -373,6 +373,11 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2; Br
 	build SOperand2;
 }
 
+:return Operand0 is inFuncBody=1 & opc=0x31; _1Operand; Operand0 {
+	RET = Operand0;
+	return [RA];
+}
+
 :copy Operand0 SOperand1 is inFuncBody=1 & opc=0x40; _2Operands; Operand0; SOperand1 {
 	OUT = Operand0;
 	build SOperand1;
@@ -527,9 +532,4 @@ is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; POperand0; Operand1; Operand2;
 	OUT = fncall(POperand0, Operand1, Operand2, Operand3);
 	SP = oldsp;
 	build SOperand4;
-}
-
-:return Operand0 is inFuncBody=1 & opc=0x31; _1Operand; Operand0 {
-	RET = Operand0;
-	return [RA];
 }

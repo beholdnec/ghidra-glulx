@@ -38,9 +38,12 @@ define pcodeop fncall;
 define pcodeop fncalln;
 define pcodeop quit;
 define pcodeop restoreundo;
+define pcodeop gestalt;
 define pcodeop glk;
 define pcodeop getmemsize;
 define pcodeop binarysearch;
+define pcodeop aloadbit;
+define pcodeop astorebit;
 define pcodeop streamstr;
 define pcodeop streamchar;
 define pcodeop streamunichar;
@@ -248,6 +251,11 @@ funcLocals: imm16 funcLocals is imm16; funcLocals {
 	build SOperand2;
 }
 
+:bitnot Operand0 SOperand1 is inFuncBody=1 & opc=0x1B; _2Operands; Operand0; SOperand1 {
+	OUT = ~Operand0;
+	build SOperand1;
+}
+
 :ushiftr Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x1E; _3Operands; Operand0; Operand1; SOperand2 {
 	OUT = Operand0 >> Operand1;
 	build SOperand2;
@@ -292,7 +300,7 @@ BranchVariantOper2: BrTargetOperand2 is BrTargetOperand2 {
 
 # FIXME: Using BrTargetOperand1 in both jz and BranchVariantOper1 will cause its p-code to be emitted twice!
 #        This can cause incorrect decompilation if the p-code has side-effects such as push and pop.
-#        The same issue occurs in all branch instructions.
+#        This issue occurs in all branch instructions.
 :jz Operand0 BranchVariantOper1
 is inFuncBody=1 & opc=0x22; _2Operands; Operand0; BrTargetOperand1 & BranchVariantOper1 {
 	CMP = Operand0 == 0;
@@ -375,9 +383,8 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	build SOperand2;
 }
 
-:aloadbit Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x4B; _3Operands; Operand0; Operand1; SOperand2 {
-	local bitnum:4 = Operand1 & 0x7;
-	OUT = (Operand0 >> bitnum) & 0x1;
+:aloadbit POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x4B; _3Operands; POperand0; Operand1; SOperand2 {
+	OUT = aloadbit(POperand0, Operand1);
 	build SOperand2;
 }
 
@@ -396,6 +403,24 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	*:1 addr = Operand2;
 }
 
+:astorebit POperand0 Operand1 Operand2 is inFuncBody=1 & opc=0x4F; _3Operands; POperand0; Operand1; Operand2 {
+	# TODO: don't use custom pcodeop?
+	astorebit(POperand0, Operand1, Operand2);
+}
+
+:stkcopy Operand0 is inFuncBody=1 & opc=0x54; _1Operand; Operand0 {
+	build Operand0; # If L1 uses the stack pop mode, the stkcopy is counted after L1 is popped.
+	local count:4 = Operand0;
+	local src:4 = SP - (4 * count);
+<loop>
+	if (count == 0) goto inst_next;
+	local val:4 = *[vmstack]:4 src;
+	push(val);
+	src = src + 4;
+	count = count - 1;
+	goto <loop>;
+}
+
 :streamchar Operand0 is inFuncBody=1 & opc=0x70; _1Operand; Operand0 {
 	streamchar(Operand0);
 }
@@ -410,6 +435,11 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 
 :streamunichar Operand0 is inFuncBody=1 & opc=0x73; _1Operand; Operand0 {
 	streamunichar(Operand0);
+}
+
+:gestalt Operand0 Operand1 SOperand2 is inFuncBody & opc=0x81; opc=0x00; _3Operands; Operand0; Operand1; SOperand2 {
+	OUT = gestalt(Operand0, Operand1);
+	build SOperand2;
 }
 
 :getmemsize SOperand0 is inFuncBody=1 & opc=0x81; opc=0x02; _1Operand; SOperand0 {
@@ -437,24 +467,47 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	build SOperand7;
 }
 
-:callf POperand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; POperand0; SOperand1 {
-	OUT = fncall(POperand0);
+:callf Operand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; Operand0; SOperand1 {
+	local oldsp:4 = SP;
+	local target:4 = Operand0;
+	call [target];
+	OUT = RET;
 	build SOperand1;
+	SP = oldsp;
 }
 
-:callfi POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; POperand0; Operand1; SOperand2 {
-	OUT = fncall(POperand0, Operand1);
+:callfi Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; Operand0; Operand1; SOperand2 {
+	local oldsp:4 = SP;
+	push(Operand1);
+	local target:4 = Operand0;
+	call [target];
+	OUT = RET;
 	build SOperand2;
+	SP = oldsp;
 }
 
-:callfii POperand0 Operand1 Operand2 SOperand3 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; POperand0; Operand1; Operand2; SOperand3 {
-	OUT = fncall(POperand0, Operand1, Operand2);
+:callfii Operand0 Operand1 Operand2 SOperand3 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; Operand0; Operand1; Operand2; SOperand3 {
+	local oldsp:4 = SP;
+	push(Operand2);
+	push(Operand1);
+	local target:4 = Operand0;
+	call [target];
+	OUT = RET;
 	build SOperand3;
+	SP = oldsp;
 }
 
-:callfiii POperand0 Operand1 Operand2 Operand3 SOperand4 is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; POperand0; Operand1; Operand2; Operand3; SOperand4 {
-	OUT = fncall(POperand0, Operand1, Operand2, Operand3);
+:callfiii Operand0 Operand1 Operand2 Operand3 SOperand4
+is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; Operand0; Operand1; Operand2; Operand3; SOperand4 {
+	local oldsp:4 = SP;
+	push(Operand3);
+	push(Operand2);
+	push(Operand1);
+	local target:4 = Operand0;
+	call [target];
+	OUT = RET;
 	build SOperand4;
+	SP = oldsp;
 }
 
 :return Operand0 is inFuncBody=1 & opc=0x31; _1Operand; Operand0 {

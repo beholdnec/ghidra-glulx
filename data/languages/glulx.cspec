@@ -11,14 +11,15 @@
     <range space="mem" />
   </global>
   
-  <!-- JVM has a return_address register but does not declare a <returnaddress> in its cspec, so.... ok.
+  <!-- JVM has a return_address register but does not declare a <returnaddress> in its cspec, so....
+       ... We'll follow their lead.
   <returnaddress>
   	<register name="RA" />
   </returnaddress>
   -->
   
   <!-- XXX: Althrough Glulx uses a positive-growth stack, we declare "negative" here to avoid Ghidra issues. -->
-  <stackpointer register="SP" space="vmstack" growth="negative" />
+  <stackpointer register="SP" space="vmstack" growth="positive" />
   
   <default_proto>
   	<!-- TODO: find a way to decide call convention based on func type C0 or C1 -->
@@ -28,7 +29,7 @@
 	        <pentry minsize="1" maxsize="500" align="4">
 	        	<!-- TODO: special handling for 1- and 2-byte locals? But those probably never occur. -->
 	        	<!-- The offset attribute cancels out maxsize="500", so arguments start at local:0. -->
-	          <addr offset="0" space="param" />
+	          <addr offset="0xfffffe0c" space="stack" />
 	        </pentry>
 	      </input>
 	      <output>
@@ -40,10 +41,11 @@
 	        <register name="SP"/>
 	      </unaffected>
 	      <pcode inject="uponentry" dynamic="true" /> <!-- Injected dynamically by PcodeInjectLibraryGlulx -->
-	      <!-- XXX: this is meaningless, but declare a localrange to hopefully avoid issues -->
-        <localrange>
-          <range space="param" first="0x00010000" last="0x00010010"/>
-        </localrange>
+	        <!-- This first range lists the permissible stack offsets
+	             that can be used as scratch and/or local variables  -->
+			<localrange>
+		          <range space="stack" first="0x0" last="0xf"/>
+			</localrange>
 	  </prototype>
 	</default_proto>
 	

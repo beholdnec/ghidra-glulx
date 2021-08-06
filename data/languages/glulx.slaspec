@@ -7,14 +7,18 @@ define endian=big;
 define alignment=1;
 
 define space mem      type=ram_space      size=4 default;
-# The name "stack" cannot be used since it is reserved.
+
+# Glulx has a stack space that is separate from main memory.
+# The name "stack" cannot be used since it is reserved. We use "vmstack".
 define space vmstack  type=ram_space      size=4;
-# Parameters are passed to functions' local space in a similar manner as JVM.
+
+# In the Glulx specification, locals are presented as if they exist on the stack.
+# However, during execution, they exist in a conceptually different space.
 define space local    type=ram_space      size=4;
-define space param    type=ram_space      size=4;
+
 define space register type=register_space size=2;
 
-define register offset=0x00 size=4 [ PC SP RA RAMSTART RET OUT LVA ];
+define register offset=0x00 size=4 [ PC SP RA RAMSTART RET OUT LVA SVA ];
 define register offset=0x80 size=1 [ CMP ];
 
 # Define context bits (if defined, size must be multiple of 4-bytes)

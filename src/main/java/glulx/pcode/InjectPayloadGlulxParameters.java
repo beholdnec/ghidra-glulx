@@ -6,6 +6,7 @@ import ghidra.program.model.address.Address;
 import ghidra.program.model.address.AddressSpace;
 import ghidra.program.model.lang.InjectContext;
 import ghidra.program.model.lang.InjectPayload;
+import ghidra.program.model.lang.Register;
 import ghidra.program.model.listing.Function;
 import ghidra.program.model.listing.Program;
 import ghidra.program.model.pcode.PcodeOp;
@@ -23,12 +24,14 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 	private InjectParameter[] noParams;
 	private boolean analysisStateRecoverable;
 	private AddressSpace constantSpace;
-	private int paramSpaceID;
 	private int localSpaceID;
+	private int vmstackSpaceID;
 	private Varnode temp4;
 	private Varnode zero;
 	private Varnode four;
-	private Varnode LVA;
+	private Varnode LVA; // Local variable address
+	private Varnode SVA; // Stack variable address
+	private Varnode SP; // Stack pointer
 	
 	public InjectPayloadGlulxParameters(String nm, String srcName, SleighLanguage language, long uniqBase) {
 		name = nm;
@@ -40,10 +43,10 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 		AddressSpace uniqueSpace = language.getAddressFactory().getUniqueSpace();
 		Address temp4Address = uniqueSpace.getAddress(uniqBase);
 		
-		AddressSpace paramSpace = language.getAddressFactory().getAddressSpace("param");
-		paramSpaceID = paramSpace.getSpaceID();
 		AddressSpace localSpace = language.getAddressFactory().getAddressSpace("local");
 		localSpaceID = localSpace.getSpaceID();
+		AddressSpace vmstackSpace = language.getAddressFactory().getAddressSpace("vmstack");
+		vmstackSpaceID = vmstackSpace.getSpaceID();
 		
 		// create temp storage location
 		temp4 = new Varnode(temp4Address, 4);
@@ -54,6 +57,10 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 		
 		Address LVAregAddress = language.getRegister("LVA").getAddress();
 		LVA = new Varnode(LVAregAddress, 4);
+		Address SVAregAddress = language.getRegister("SVA").getAddress();
+		SVA = new Varnode(SVAregAddress, 4);
+		Address SPregAddress = language.getRegister("SP").getAddress();
+		SP = new Varnode(SPregAddress, 4);
 	}
 
 	@Override
@@ -114,13 +121,18 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 		
 		int numOps = function.getParameterCount();
 		
-		PcodeOp[] resOps = new PcodeOp[1 + 3 * numOps];
+		PcodeOp[] resOps = new PcodeOp[2 + 4 * numOps];
 		int seqNum = 0;
 
 		//initialize LVA to contain 0
 		PcodeOp copy = new PcodeOp(con.baseAddr, seqNum, PcodeOp.COPY);
 		copy.setInput(zero, 0);
 		copy.setOutput(LVA);
+		resOps[seqNum++] = copy;
+		// initialize SVA to contain SP
+		copy = new PcodeOp(con.baseAddr, seqNum, PcodeOp.COPY);
+		copy.setInput(SP, 0);
+		copy.setOutput(SVA);
 		resOps[seqNum++] = copy;
 		
 		Varnode tempLocation = temp4;
@@ -129,10 +141,16 @@ public class InjectPayloadGlulxParameters implements InjectPayload {
 		// TODO: detect C0 or C1 function, fill all locals with 0's except those filled by params,
 		//       pay attention to size (which will almost always be 4)
 		for (int i = 0; i < numOps; i++) {
-			//copy value from parameterSpace to temporary
+			//decrement SVA reg
+			PcodeOp sub = new PcodeOp(con.baseAddr, seqNum, PcodeOp.INT_SUB);
+			sub.setInput(SVA, 0);
+			sub.setInput(increment, 1);
+			sub.setOutput(SVA);
+			resOps[seqNum++] = sub;
+			//copy value from stackSpace to temporary
 			PcodeOp load = new PcodeOp(con.baseAddr, seqNum, PcodeOp.LOAD);
-			load.setInput(new Varnode(constantSpace.getAddress(paramSpaceID), 4), 0);
-			load.setInput(LVA, 1);
+			load.setInput(new Varnode(constantSpace.getAddress(vmstackSpaceID), 4), 0);
+			load.setInput(SVA, 1);
 			load.setOutput(tempLocation);
 			resOps[seqNum++] = load;
 			//copy temporary to LVA

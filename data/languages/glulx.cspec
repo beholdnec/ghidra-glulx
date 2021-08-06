@@ -24,7 +24,7 @@
   <default_proto>
   	<!-- TODO: find a way to decide call convention based on func type C0 or C1 -->
   	<!-- C1 (i.e. __localargs) is the most common -->
-	  <prototype name="__localargs" extrapop="0" stackshift="0">
+	  <prototype name="__localargs" extrapop="unknown" stackshift="0">
 	      <input>
 	        <pentry minsize="1" maxsize="500" align="4">
 	        	<!-- TODO: special handling for 1- and 2-byte locals? But those probably never occur. -->

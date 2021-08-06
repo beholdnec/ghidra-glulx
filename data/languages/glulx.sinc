@@ -356,7 +356,10 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 }
 
 :call POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x30; _3Operands; POperand0; Operand1; SOperand2 {
+	local n:4 = Operand1;
 	OUT = fncalln(POperand0, Operand1);
+	# Pop n arguments from the stack
+	SP = SP - (4 * n);
 	build SOperand2;
 }
 
@@ -467,47 +470,53 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2 & B
 	build SOperand7;
 }
 
-:callf Operand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; Operand0; SOperand1 {
+:callf POperand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; POperand0; SOperand1 {
 	local oldsp:4 = SP;
-	local target:4 = Operand0;
-	call [target];
-	OUT = RET;
+	#local target:4 = Operand0;
+	#call [target];
+	#OUT = RET;
+	OUT = fncall(POperand0);
+	SP = oldsp;
 	build SOperand1;
-	SP = oldsp;
 }
 
-:callfi Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; Operand0; Operand1; SOperand2 {
+:callfi POperand0 Operand1 SOperand2
+is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; POperand0; Operand1; SOperand2 {
 	local oldsp:4 = SP;
-	push(Operand1);
-	local target:4 = Operand0;
-	call [target];
-	OUT = RET;
+	#push(Operand1);
+	#local target:4 = Operand0;
+	#call [target];
+	#OUT = RET;
+	OUT = fncall(POperand0, Operand1);
+	SP = oldsp;
 	build SOperand2;
-	SP = oldsp;
 }
 
-:callfii Operand0 Operand1 Operand2 SOperand3 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; Operand0; Operand1; Operand2; SOperand3 {
+:callfii POperand0 Operand1 Operand2 SOperand3
+is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; POperand0; Operand1; Operand2; SOperand3 {
 	local oldsp:4 = SP;
-	push(Operand2);
-	push(Operand1);
-	local target:4 = Operand0;
-	call [target];
-	OUT = RET;
+	#push(Operand2);
+	#push(Operand1);
+	#local target:4 = Operand0;
+	#call [target];
+	#OUT = RET;
+	OUT = fncall(POperand0, Operand1, Operand2);
+	SP = oldsp;
 	build SOperand3;
-	SP = oldsp;
 }
 
-:callfiii Operand0 Operand1 Operand2 Operand3 SOperand4
-is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; Operand0; Operand1; Operand2; Operand3; SOperand4 {
+:callfiii POperand0 Operand1 Operand2 Operand3 SOperand4
+is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; POperand0; Operand1; Operand2; Operand3; SOperand4 {
 	local oldsp:4 = SP;
-	push(Operand3);
-	push(Operand2);
-	push(Operand1);
-	local target:4 = Operand0;
-	call [target];
-	OUT = RET;
-	build SOperand4;
+	#push(Operand3);
+	#push(Operand2);
+	#push(Operand1);
+	#local target:4 = Operand0;
+	#call [target];
+	#OUT = RET;
+	OUT = fncall(POperand0, Operand1, Operand2, Operand3);
 	SP = oldsp;
+	build SOperand4;
 }
 
 :return Operand0 is inFuncBody=1 & opc=0x31; _1Operand; Operand0 {

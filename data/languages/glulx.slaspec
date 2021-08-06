@@ -26,7 +26,7 @@ define register offset=0x100 size=8   contextreg;
 
 define context contextreg
   inFuncBody   = (0,0)
-  ret1         = (1,1) noflow
+  branchAction = (1,2) noflow # See below for values
   operType0    = (4,7) noflow
   operType1    = (8,11) noflow
   operType2    = (12,15) noflow
@@ -36,6 +36,11 @@ define context contextreg
   operType6    = (28,31) noflow
   operType7    = (32,35) noflow
 ;
+
+# Values for branchAction context register
+@define BR_GOTO 0 # Default
+@define BR_RET0 1
+@define BR_RET1 2
 
 # Include contents of glulx.sinc file
 @include "glulx.sinc"

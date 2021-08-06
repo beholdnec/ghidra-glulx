@@ -187,20 +187,21 @@ SOperand7:        is operType7=0x0         { sopty0Sem(OUT); }
 SOperand7: "push" is operType7=0x8         { sopty8Sem(OUT); }
 SOperand7: Imm8   is operType7=0x9; Imm8  { sopty9Sem(OUT, Imm8); }
 
-BrTargetOperand0: "ret1" is operType0=0x1; simm8=0x01 [ ret1 = 1; ] {_TODO_(); export *:1 inst_next; }
-BrTargetOperand0: target is operType0=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { _TODO_();export *:1 target; }
-BrTargetOperand0: target is operType0=0x2; simm16 [ target = inst_next + simm16 - 2; ] {_TODO_();export *:1 target; }
-BrTargetOperand0: target is operType0=0x3; imm32 [ target = inst_next + imm32 - 2; ] {_TODO_();export *:1 target; }
+BrTargetOperand0: "ret0" is operType0=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
+BrTargetOperand0: "ret1" is operType0=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
+BrTargetOperand0: target is operType0=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
+BrTargetOperand0: target is operType0=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
+BrTargetOperand0: target is operType0=0x3; imm32      [ target = inst_next + imm32 - 2; ]  { BRTARGET = target; }
 
-BrTargetOperand1: "ret0" is operType1=0x0 { _TODO_(); export *:1 inst_next; }
-BrTargetOperand1: "ret1" is operType1=0x1; simm8=0x01 [ ret1 = 1; ] { _TODO_(); export *:1 inst_next; }
-BrTargetOperand1: target is operType1=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { _TODO_(); export *:1 target; }
-BrTargetOperand1: target is operType1=0x2; simm16 [ target = inst_next + simm16 - 2; ] { _TODO_(); export *:1 target; }
+BrTargetOperand1: "ret0" is operType1=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
+BrTargetOperand1: "ret1" is operType1=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
+BrTargetOperand1: target is operType1=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
+BrTargetOperand1: target is operType1=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
 
-BrTargetOperand2: "ret0" is operType2=0x0 { BRTARGET = inst_next; }
-BrTargetOperand2: "ret1" is operType2=0x1; simm8=0x01 [ ret1 = 1; ] { BRTARGET = inst_next; }
-BrTargetOperand2: target is operType2=0x1; simm8 [ target = inst_next + simm8 - 2; ret1 = 0; ] { BRTARGET = target; }
-BrTargetOperand2: target is operType2=0x2; simm16 [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
+BrTargetOperand2: "ret0" is operType2=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
+BrTargetOperand2: "ret1" is operType2=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
+BrTargetOperand2: target is operType2=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
+BrTargetOperand2: target is operType2=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
 
 ################################################################
 
@@ -269,102 +270,91 @@ funcLocals: imm16 funcLocals is imm16; funcLocals {
 	build SOperand2;
 }
 
-BranchVariantOper1: "ret0" is BrTargetOperand1 & operType1=0x0 {
+BranchAction: is branchAction=$(BR_RET0) {
 	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 0;
 	return [RA];
 }
 
-BranchVariantOper1: "ret1" is BrTargetOperand1 & operType1=0x1 & ret1=1 {
+BranchAction: is branchAction=$(BR_RET1) {
 	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
 	RET = 1;
 	return [RA];
 }
 
-BranchVariantOper1: BrTargetOperand1 is BrTargetOperand1 {
-	goto [BRTARGET];
-}
-
-BranchVariantOper2: is operType2=0x0 {
-	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 0;
-	return [RA];
-}
-
-BranchVariantOper2: is operType2=0x1 & ret1=1 {
-	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 1;
-	return [RA];
-}
-
-BranchVariantOper2: is epsilon {
+BranchAction: is epsilon {
 	if (!CMP) goto inst_next; # XXX: indirect branch cannot be placed in an if statement, so do this instead.
 	goto [BRTARGET];
 }
 
-:jump BrTargetOperand0 is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0 {
-	goto BrTargetOperand0;
+:jump BrTargetOperand0
+is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0; BranchAction {
+	CMP = 1;
+	build BrTargetOperand0;
+	build BranchAction;
 }
 
-:jz Operand0 BranchVariantOper1
-is inFuncBody=1 & opc=0x22; _2Operands; Operand0; BranchVariantOper1 {
+:jz Operand0 BrTargetOperand1
+is inFuncBody=1 & opc=0x22; _2Operands; Operand0; BrTargetOperand1; BranchAction {
 	CMP = Operand0 == 0;
-	build BranchVariantOper1;
+	build BrTargetOperand1;
+	build BranchAction;
 }
 
-:jnz Operand0 BranchVariantOper1
-is inFuncBody=1 & opc=0x23; _2Operands; Operand0; BranchVariantOper1 {
+:jnz Operand0 BrTargetOperand1
+is inFuncBody=1 & opc=0x23; _2Operands; Operand0; BrTargetOperand1; BranchAction {
 	CMP = Operand0 != 0;
-	build BranchVariantOper1;
+	build BrTargetOperand1;
+	build BranchAction;
 }
 
 :jeq Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 == Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
 :jne Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 != Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
 :jlt Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x26; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+is inFuncBody=1 & opc=0x26; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 s< Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
-:jge Operand0 Operand1 BranchVariantOper2
-is inFuncBody=1 & opc=0x27; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+:jge Operand0 Operand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x27; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 s>= Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
-:jgt Operand0 Operand1 BranchVariantOper2
-is inFuncBody=1 & opc=0x28; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+:jgt Operand0 Operand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x28; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 s> Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
-:jle Operand0 Operand1 BranchVariantOper2
-is inFuncBody=1 & opc=0x29; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+:jle Operand0 Operand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x29; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 s<= Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
-:jgeu Operand0 Operand1 BranchVariantOper2
-is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchVariantOper2 {
+:jgeu Operand0 Operand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
 	CMP = Operand0 >= Operand1;
 	build BrTargetOperand2;
-	build BranchVariantOper2;
+	build BranchAction;
 }
 
 :call POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x30; _3Operands; POperand0; Operand1; SOperand2 {

@@ -27,14 +27,15 @@ define register offset=0x100 size=8   contextreg;
 define context contextreg
   inFuncBody   = (0,0)
   branchAction = (1,2) noflow # See below for values
-  operType0    = (4,7) noflow
-  operType1    = (8,11) noflow
-  operType2    = (12,15) noflow
-  operType3    = (16,19) noflow
-  operType4    = (20,23) noflow
-  operType5    = (24,27) noflow
-  operType6    = (28,31) noflow
-  operType7    = (32,35) noflow
+  currOperType = (3,6) noflow
+  operType0    = (8,11) noflow
+  operType1    = (12,15) noflow
+  operType2    = (16,19) noflow
+  operType3    = (20,23) noflow
+  operType4    = (24,27) noflow
+  operType5    = (28,31) noflow
+  operType6    = (32,35) noflow
+  operType7    = (36,39) noflow
 ;
 
 # Values for branchAction context register

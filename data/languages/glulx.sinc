@@ -65,28 +65,11 @@ macro pop(val) {
 	val = *[vmstack]:4 SP;
 }
 
-macro lopty0Sem(val)         { val = 0; }
-macro lopty1Sem(val, imm8)   { val = sext(imm8); }
-macro lopty2Sem(val, imm16)  { val = sext(imm16); }
-macro lopty3Sem(val, imm32)  { val = imm32; }
-macro lopty8Sem(val)         { pop(val); }
-macro lopty9Sem(val, offs8)  { local offs:4 = zext(offs8); val = *[local]:4 offs; }
-macro loptyDSem(val, addr8)  { local addr:4 = RAMSTART + zext(addr8); val = *:4 addr; }
-macro loptyESem(val, addr16) { local addr:4 = RAMSTART + zext(addr16); val = *:4 addr; }
-macro loptyFSem(val, addr32) { local addr:4 = RAMSTART + addr32; val = *:4 addr; }
-
-macro sopty0Sem(out)        { } # Discard
-macro sopty8Sem(out)        { push(out); }
-macro sopty9Sem(out, offs8) { local offs:4 = zext(offs8); *[local]:4 offs = out; }
-macro soptyDSem(out, addr8) { local addr:4 = RAMSTART + zext(addr8); *:4 addr = out; }
-
 ################################################################
 
 Imm8: imm8 is imm8 { export *[const]:1 imm8; }
 Imm16: imm16 is imm16 { export *[const]:2 imm16; }
 Imm32: imm32 is imm32 { export *[const]:4 imm32; }
-
-Local8: imm8 is imm8 { export *[local]:4 imm8; }
 
 _1Operand:  is opty0 [ operType0 = opty0; ] {}
 _2Operands: is opty0 & opty1 [ operType0 = opty0; operType1 = opty1; ] {}
@@ -95,113 +78,65 @@ _4Operands: is opty0 & opty1; opty2 & opty3 [ operType0 = opty0; operType1 = opt
 _5Operands: is opty0 & opty1; opty2 & opty3; opty4 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; ] {}
 _8Operands: is opty0 & opty1; opty2 & opty3; opty4 & opty5; opty6 & opty7 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; operType3 = opty3; operType4 = opty4; operType5 = opty5; operType6 = opty6; operType7 = opty7; ] {}
 
-POperand0: "0"   is operType0=0x0        { local ptr:4; lopty0Sem(ptr); export *:1 ptr; }
-POperand0: imm32 is operType0=0x3; imm32 { local ptr:4; lopty3Sem(ptr, imm32); export *:1 ptr; }
-POperand0: Imm8  is operType0=0x9; Imm8  { local ptr:4; lopty9Sem(ptr, Imm8); export *:1 ptr; }
-POperand0: Imm16 is operType0=0xE; Imm16 { local ptr:4; loptyESem(ptr, Imm16); export *:1 ptr; }
+FetchOperType0: is epsilon [ currOperType = operType0; ] { }
+FetchOperType1: is epsilon [ currOperType = operType1; ] { }
+FetchOperType2: is epsilon [ currOperType = operType2; ] { }
+FetchOperType3: is epsilon [ currOperType = operType3; ] { }
+FetchOperType4: is epsilon [ currOperType = operType4; ] { }
+FetchOperType5: is epsilon [ currOperType = operType5; ] { }
+FetchOperType6: is epsilon [ currOperType = operType6; ] { }
+FetchOperType7: is epsilon [ currOperType = operType7; ] { }
 
-Operand0: "0"   is operType0=0x0        { local val:4; lopty0Sem(val); export val; }
-Operand0: Imm8  is operType0=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand0: Imm16 is operType0=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand0: Imm32 is operType0=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand0: "pop" is operType0=0x8        { local val:4; lopty8Sem(val); export val; }
-Operand0: Imm8  is operType0=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-Operand0: Imm8  is operType0=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
-Operand0: Imm16 is operType0=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
-Operand0: Imm32 is operType0=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
+LOperand: "0"   is currOperType=0x0        { export 0:4; }
+LOperand: Imm8  is currOperType=0x1; Imm8  { local val:4 = sext(Imm8); export val; }
+LOperand: Imm16 is currOperType=0x2; Imm16 { local val:4 = sext(Imm16); export val; }
+LOperand: Imm32 is currOperType=0x3; Imm32 { export Imm32; }
+LOperand: "pop" is currOperType=0x8        { local val:4; pop(val); export val; }
+LOperand: Imm8  is currOperType=0x9; Imm8  { local offs:4 = zext(Imm8); export *[local]:4 offs; }
+LOperand: Imm8  is currOperType=0xD; Imm8  { local addr:4 = RAMSTART + zext(Imm8); export *:4 addr; }
+LOperand: Imm16 is currOperType=0xE; Imm16 { local addr:4 = RAMSTART + zext(Imm16); export *:4 addr; }
+LOperand: Imm32 is currOperType=0xF; Imm32 { local addr:4 = RAMSTART + Imm32; export *:4 addr; }
 
-SOperand0:        is operType0=0x0         { sopty0Sem(OUT); }
-SOperand0: "push" is operType0=0x8         { sopty8Sem(OUT); }
-SOperand0: Imm8   is operType0=0x9 & Imm8  { sopty9Sem(OUT, Imm8); }
+# LOperand must be copied to a temp variable to avoid corruption when
+# LOperand is parsed more than once in a single Glulx instruction.
+# FIXME: The corruption seems to be a bug in Ghidra, or at least it is
+# very unintuitive behavior.
+LOperand0: LOperand is FetchOperType0; LOperand { local tmp:4 = LOperand; export tmp; }
+LOperand1: LOperand is FetchOperType1; LOperand { local tmp:4 = LOperand; export tmp; }
+LOperand2: LOperand is FetchOperType2; LOperand { local tmp:4 = LOperand; export tmp; }
+LOperand3: LOperand is FetchOperType3; LOperand { local tmp:4 = LOperand; export tmp; }
+LOperand4: LOperand is FetchOperType4; LOperand { local tmp:4 = LOperand; export tmp; }
+LOperand5: LOperand is FetchOperType5; LOperand { local tmp:4 = LOperand; export tmp; }
+LOperand6: LOperand is FetchOperType6; LOperand { local tmp:4 = LOperand; export tmp; }
 
-Operand1: "0"   is operType1=0x0        { local val:4; lopty0Sem(val); export val; }
-Operand1: Imm8  is operType1=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand1: Imm16 is operType1=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand1: Imm32 is operType1=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand1: "pop" is operType1=0x8        { local val:4; lopty8Sem(val); export val; }
-Operand1: Imm8  is operType1=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-Operand1: Imm8  is operType1=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
-Operand1: Imm16 is operType1=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
-Operand1: Imm32 is operType1=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
+SOperand:        is currOperType=0x0        { } # Discard
+SOperand: "push" is currOperType=0x8        { push(OUT); }
+SOperand: Imm8   is currOperType=0x9; Imm8  { local offs:4 = zext(Imm8); *[local]:4 offs = OUT; }
+SOperand: Imm8   is currOperType=0xD; Imm8  { local addr:4 = RAMSTART + zext(Imm8); *:4 addr = OUT; }
+SOperand: Imm16  is currOperType=0xE; Imm16 { local addr:4 = RAMSTART + zext(Imm16); *:4 addr = OUT; }
 
-SOperand1:        is operType1=0x0         { sopty0Sem(OUT); }
-SOperand1: "push" is operType1=0x8         { sopty8Sem(OUT); }
-SOperand1: Imm8   is operType1=0x9; Imm8  { sopty9Sem(OUT, Imm8); }
-SOperand1: Imm8   is operType1=0xD; Imm8  { soptyDSem(OUT, Imm8); }
-SOperand1: Imm16  is operType1=0xE; Imm16 { local tmp:4 = RAMSTART + zext(Imm16); *:4 tmp = OUT; }
+SOperand0: SOperand is FetchOperType0; SOperand { }
+SOperand1: SOperand is FetchOperType1; SOperand { }
+SOperand2: SOperand is FetchOperType2; SOperand { }
+SOperand3: SOperand is FetchOperType3; SOperand { }
+SOperand4: SOperand is FetchOperType4; SOperand { }
+SOperand5: SOperand is FetchOperType5; SOperand { }
+SOperand6: SOperand is FetchOperType6; SOperand { }
+SOperand7: SOperand is FetchOperType7; SOperand { }
 
-Operand2: "0"   is operType2=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand2: Imm8  is operType2=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand2: Imm16 is operType2=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand2: Imm32 is operType2=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand2: "pop" is operType2=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand2: Imm8  is operType2=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-Operand2: Imm8  is operType2=0xD; Imm8  { local val:4; loptyDSem(val, Imm8); export val; }
-Operand2: Imm16 is operType2=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
-Operand2: Imm32 is operType2=0xF; Imm32 { local val:4; loptyFSem(val, Imm32); export val; }
+BrTargetOperand: "ret0" is currOperType=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
+BrTargetOperand: "ret1" is currOperType=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
+BrTargetOperand: target is currOperType=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
+BrTargetOperand: target is currOperType=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
+BrTargetOperand: target is currOperType=0x3; imm32      [ target = inst_next + imm32 - 2; ]  { BRTARGET = target; }
+# This constructor is required to work around a Ghidra bug where an old currOperType is used for matching.
+# The new currOperType is used for parsing and building.
+# FIXME: This seems to be a bug in Ghidra, or at least it is very unintuitive behavior.
+BrTargetOperand: "***ERROR: UNKNOWN OPER TYPE***" currOperType is currOperType               { BRTARGET = inst_next; }
 
-SOperand2:        is operType2=0x0         { }
-SOperand2: "push" is operType2=0x8         { sopty8Sem(OUT); }
-SOperand2: Imm8   is operType2=0x9; Imm8  { sopty9Sem(OUT, Imm8); }
-SOperand2: Imm8   is operType2=0xD; Imm8  { soptyDSem(OUT, Imm8); }
-SOperand2: Imm16  is operType2=0xE; Imm16 { local tmp:4 = RAMSTART + zext(Imm16); *:4 tmp = OUT; }
-
-Operand3: "0"   is operType3=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand3: Imm8  is operType3=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand3: Imm16 is operType3=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand3: Imm32 is operType3=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand3: "pop" is operType3=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand3: Imm8  is operType3=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-Operand3: Imm16 is operType3=0xE; Imm16 { local val:4; loptyESem(val, Imm16); export val; }
-
-SOperand3:        is operType3=0x0         { sopty0Sem(OUT); }
-SOperand3: "push" is operType3=0x8         { sopty8Sem(OUT); }
-SOperand3: Imm8   is operType3=0x9; Imm8  { sopty9Sem(OUT, Imm8); }
-
-Operand4: "0"   is operType4=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand4: Imm8  is operType4=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand4: Imm16 is operType4=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand4: Imm32 is operType4=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand4: "pop" is operType4=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand4: Imm8  is operType4=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-
-SOperand4:        is operType4=0x0         { sopty0Sem(OUT); }
-SOperand4: "push" is operType4=0x8         { sopty8Sem(OUT); }
-SOperand4: Imm8   is operType4=0x9; Imm8  { sopty9Sem(OUT, Imm8); }
-
-Operand5: "0"   is operType5=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand5: Imm8  is operType5=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand5: Imm16 is operType5=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand5: Imm32 is operType5=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand5: "pop" is operType5=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand5: Imm8  is operType5=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-
-Operand6: "0"   is operType6=0x0         { local val:4; lopty0Sem(val); export val; }
-Operand6: Imm8  is operType6=0x1; Imm8  { local val:4; lopty1Sem(val, Imm8); export val; }
-Operand6: Imm16 is operType6=0x2; Imm16 { local val:4; lopty2Sem(val, Imm16); export val; }
-Operand6: Imm32 is operType6=0x3; Imm32 { local val:4; lopty3Sem(val, Imm32); export val; }
-Operand6: "pop" is operType6=0x8         { local val:4; lopty8Sem(val); export val; }
-Operand6: Imm8  is operType6=0x9; Imm8  { local val:4; lopty9Sem(val, Imm8); export val; }
-
-SOperand7:        is operType7=0x0         { sopty0Sem(OUT); }
-SOperand7: "push" is operType7=0x8         { sopty8Sem(OUT); }
-SOperand7: Imm8   is operType7=0x9; Imm8  { sopty9Sem(OUT, Imm8); }
-
-BrTargetOperand0: "ret0" is operType0=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
-BrTargetOperand0: "ret1" is operType0=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
-BrTargetOperand0: target is operType0=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
-BrTargetOperand0: target is operType0=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
-BrTargetOperand0: target is operType0=0x3; imm32      [ target = inst_next + imm32 - 2; ]  { BRTARGET = target; }
-
-BrTargetOperand1: "ret0" is operType1=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
-BrTargetOperand1: "ret1" is operType1=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
-BrTargetOperand1: target is operType1=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
-BrTargetOperand1: target is operType1=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
-
-BrTargetOperand2: "ret0" is operType2=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
-BrTargetOperand2: "ret1" is operType2=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
-BrTargetOperand2: target is operType2=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
-BrTargetOperand2: target is operType2=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
+BrTargetOperand0: BrTargetOperand is FetchOperType0; BrTargetOperand { }
+BrTargetOperand1: BrTargetOperand is FetchOperType1; BrTargetOperand { }
+BrTargetOperand2: BrTargetOperand is FetchOperType2; BrTargetOperand { }
 
 ################################################################
 
@@ -220,53 +155,59 @@ funcLocals: imm16 funcLocals is imm16; funcLocals {
 :nop is inFuncBody=1 & opc=0x00 {
 }
 
-:add Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x10; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 + Operand1;
+:add LOperand0 LOperand1 SOperand2 is inFuncBody=1 & opc=0x10; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 + LOperand1;
 	build SOperand2;
 }
 
-:sub Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x11; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 - Operand1;
+:sub LOperand0 LOperand1 SOperand2 is inFuncBody=1 & opc=0x11; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 - LOperand1;
 	build SOperand2;
 }
 
-:mul Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x12; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 * Operand1;
+:mul LOperand0 LOperand1 SOperand2 is inFuncBody=1 & opc=0x12; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 * LOperand1;
 	build SOperand2;
 }
 
-:div Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x13; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 s/ Operand1;
+:div LOperand0 LOperand1 SOperand2 is inFuncBody=1 & opc=0x13; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 s/ LOperand1;
 	build SOperand2;
 }
 
-:div Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x14; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 s% Operand1;
+:div LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x14; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 s% LOperand1;
 	build SOperand2;
 }
 
-:neg Operand0 SOperand1 is inFuncBody=1 & opc=0x15; _2Operands; Operand0; SOperand1 {
-	OUT = -Operand0;
+:neg LOperand0 SOperand1
+is inFuncBody=1 & opc=0x15; _2Operands; LOperand0; SOperand1 {
+	OUT = -LOperand0;
 	build SOperand1;
 }
 
-:bitand Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x18; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 & Operand1;
+:bitand LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x18; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 & LOperand1;
 	build SOperand2;
 }
 
-:bitor Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x19; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 | Operand1;
+:bitor LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x19; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 | LOperand1;
 	build SOperand2;
 }
 
-:bitnot Operand0 SOperand1 is inFuncBody=1 & opc=0x1B; _2Operands; Operand0; SOperand1 {
-	OUT = ~Operand0;
+:bitnot LOperand0 SOperand1
+is inFuncBody=1 & opc=0x1B; _2Operands; LOperand0; SOperand1 {
+	OUT = ~LOperand0;
 	build SOperand1;
 }
 
-:ushiftr Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x1E; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = Operand0 >> Operand1;
+:ushiftr LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x1E; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = LOperand0 >> LOperand1;
 	build SOperand2;
 }
 
@@ -294,72 +235,75 @@ is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0; BranchAction {
 	build BranchAction;
 }
 
-:jz Operand0 BrTargetOperand1
-is inFuncBody=1 & opc=0x22; _2Operands; Operand0; BrTargetOperand1; BranchAction {
-	CMP = Operand0 == 0;
+:jz LOperand0 BrTargetOperand1
+is inFuncBody=1 & opc=0x22; _2Operands; LOperand0; BrTargetOperand1; BranchAction {
+	CMP = LOperand0 == 0;
 	build BrTargetOperand1;
 	build BranchAction;
 }
 
-:jnz Operand0 BrTargetOperand1
-is inFuncBody=1 & opc=0x23; _2Operands; Operand0; BrTargetOperand1; BranchAction {
-	CMP = Operand0 != 0;
+:jnz LOperand0 BrTargetOperand1
+is inFuncBody=1 & opc=0x23; _2Operands; LOperand0; BrTargetOperand1; BranchAction {
+	CMP = LOperand0 != 0;
 	build BrTargetOperand1;
 	build BranchAction;
 }
 
-:jeq Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x24; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 == Operand1;
+:jeq LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x24; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	CMP = LOperand0 == LOperand1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:jne Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x25; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 != Operand1;
+:jne LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x25; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	CMP = LOperand0 != LOperand1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:jlt Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x26; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 s< Operand1;
+:jlt LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x26; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	CMP = LOperand0 s< LOperand1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:jge Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x27; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 s>= Operand1;
+:jge LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x27; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	local op0 = LOperand0;
+	local op1 = LOperand1;
+	CMP = op0 s>= op1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:jgt Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x28; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 s> Operand1;
+:jgt LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x28; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	CMP = LOperand0 s> LOperand1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:jle Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x29; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 s<= Operand1;
+:jle LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x29; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	CMP = LOperand0 s<= LOperand1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:jgeu Operand0 Operand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2; BranchAction {
-	CMP = Operand0 >= Operand1;
+:jgeu LOperand0 LOperand1 BrTargetOperand2
+is inFuncBody=1 & opc=0x2B; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+	CMP = LOperand0 >= LOperand1;
 	build BrTargetOperand2;
 	build BranchAction;
 }
 
-:call POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x30; _3Operands; POperand0; Operand1; SOperand2 {
-	build Operand1;
-	local n:4 = Operand1;
+:call LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x30; _3Operands; LOperand0; LOperand1; SOperand2 {
+	build LOperand0;
+	local n:4 = LOperand1;
 	# FIXME: This doesn't decompile correctly at all.
 <check>
 	if (n == 0) goto <docall>;
@@ -369,66 +313,75 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2; Br
 	n = n - 1;
 	goto <check>;
 <docall>
-	OUT = fncalln(POperand0, Operand1);
+	OUT = fncalln(LOperand0, LOperand1);
 	build SOperand2;
 }
 
-:return Operand0 is inFuncBody=1 & opc=0x31; _1Operand; Operand0 {
-	RET = Operand0;
+:return LOperand0 is inFuncBody=1 & opc=0x31; _1Operand; LOperand0 {
+	RET = LOperand0;
 	return [RA];
 }
 
-:copy Operand0 SOperand1 is inFuncBody=1 & opc=0x40; _2Operands; Operand0; SOperand1 {
-	OUT = Operand0;
+:copy LOperand0 SOperand1 is inFuncBody=1 & opc=0x40; _2Operands; LOperand0; SOperand1 {
+	OUT = LOperand0;
 	build SOperand1;
 }
 
-:aload Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x48; _3Operands; Operand0; Operand1; SOperand2 {
-	local addr:4 = Operand0 + 4 * Operand1;
+:aload LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x48; _3Operands; LOperand0; LOperand1; SOperand2 {
+	local addr:4 = LOperand0 + 4 * LOperand1;
 	OUT = *:4 addr;
 	build SOperand2;
 }
 
-:aloads Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x49; _3Operands; Operand0; Operand1; SOperand2 {
-	local addr:4 = Operand0 + 2 * Operand1;
+:aloads LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x49; _3Operands; LOperand0; LOperand1; SOperand2 {
+	local addr:4 = LOperand0 + 2 * LOperand1;
 	OUT = zext(*:2 addr);
 	build SOperand2;
 }
 
-:aloadb Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x4A; _3Operands; Operand0; Operand1; SOperand2 {
-	local addr:4 = Operand0 + Operand1;
+:aloadb LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x4A; _3Operands; LOperand0; LOperand1; SOperand2 {
+	local addr:4 = LOperand0 + LOperand1;
 	OUT = zext(*:1 addr);
 	build SOperand2;
 }
 
-:aloadbit POperand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x4B; _3Operands; POperand0; Operand1; SOperand2 {
-	OUT = aloadbit(POperand0, Operand1);
+:aloadbit LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x4B; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = aloadbit(LOperand0, LOperand1);
 	build SOperand2;
 }
 
-:astore Operand0 Operand1 Operand2 is inFuncBody=1 & opc=0x4C; _3Operands; Operand0; Operand1; Operand2 {
-	local addr:4 = Operand0 + 4 * Operand1;
-	*:4 addr = Operand2;
+:astore LOperand0 LOperand1 LOperand2
+is inFuncBody=1 & opc=0x4C; _3Operands; LOperand0; LOperand1; LOperand2 {
+	local addr:4 = LOperand0 + 4 * LOperand1;
+	*:4 addr = LOperand2;
 }
 
-:astores Operand0 Operand1 Operand2 is inFuncBody=1 & opc=0x4D; _3Operands; Operand0; Operand1; Operand2 {
-	local addr:4 = Operand0 + 2 * Operand1;
-	*:2 addr = Operand2;
+:astores LOperand0 LOperand1 LOperand2
+is inFuncBody=1 & opc=0x4D; _3Operands; LOperand0; LOperand1; LOperand2 {
+	local addr:4 = LOperand0 + 2 * LOperand1;
+	*:2 addr = LOperand2;
 }
 
-:astoreb Operand0 Operand1 Operand2 is inFuncBody=1 & opc=0x4E; _3Operands; Operand0; Operand1; Operand2 {
-	local addr:4 = Operand0 + Operand1;
-	*:1 addr = Operand2;
+:astoreb LOperand0 LOperand1 LOperand2
+is inFuncBody=1 & opc=0x4E; _3Operands; LOperand0; LOperand1; LOperand2 {
+	local addr:4 = LOperand0 + LOperand1;
+	*:1 addr = LOperand2;
 }
 
-:astorebit POperand0 Operand1 Operand2 is inFuncBody=1 & opc=0x4F; _3Operands; POperand0; Operand1; Operand2 {
+:astorebit LOperand0 LOperand1 LOperand2
+is inFuncBody=1 & opc=0x4F; _3Operands; LOperand0; LOperand1; LOperand2 {
 	# TODO: don't use custom pcodeop?
-	astorebit(POperand0, Operand1, Operand2);
+	astorebit(LOperand0, LOperand1, LOperand2);
 }
 
-:stkcopy Operand0 is inFuncBody=1 & opc=0x54; _1Operand; Operand0 {
-	build Operand0; # If L1 uses the stack pop mode, the stkcopy is counted after L1 is popped.
-	local count:4 = Operand0;
+:stkcopy LOperand0
+is inFuncBody=1 & opc=0x54; _1Operand; LOperand0 {
+	build LOperand0; # If L1 uses the stack pop mode, the stkcopy is counted after L1 is popped.
+	local count:4 = LOperand0;
 	local src:4 = SP - (4 * count);
 <loop>
 	if (count == 0) goto inst_next;
@@ -439,97 +392,104 @@ is inFuncBody=1 & opc=0x2B; _3Operands; Operand0; Operand1; BrTargetOperand2; Br
 	goto <loop>;
 }
 
-:streamchar Operand0 is inFuncBody=1 & opc=0x70; _1Operand; Operand0 {
-	streamchar(Operand0);
+:streamchar LOperand0 is inFuncBody=1 & opc=0x70; _1Operand; LOperand0 {
+	streamchar(LOperand0);
 }
 
-:streamnum Operand0 is inFuncBody=1 & opc=0x71; _1Operand; Operand0 {
-	streamnum(Operand0);
+:streamnum LOperand0 is inFuncBody=1 & opc=0x71; _1Operand; LOperand0 {
+	streamnum(LOperand0);
 }
 
-:streamstr Operand0 is inFuncBody=1 & opc=0x72; _1Operand; Operand0 {
-	streamstr(Operand0);
+:streamstr LOperand0 is inFuncBody=1 & opc=0x72; _1Operand; LOperand0 {
+	streamstr(LOperand0);
 }
 
-:streamunichar Operand0 is inFuncBody=1 & opc=0x73; _1Operand; Operand0 {
-	streamunichar(Operand0);
+:streamunichar LOperand0 is inFuncBody=1 & opc=0x73; _1Operand; LOperand0 {
+	streamunichar(LOperand0);
 }
 
-:gestalt Operand0 Operand1 SOperand2 is inFuncBody & opc=0x81; opc=0x00; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = gestalt(Operand0, Operand1);
+:gestalt LOperand0 LOperand1 SOperand2
+is inFuncBody & opc=0x81; opc=0x00; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = gestalt(LOperand0, LOperand1);
 	build SOperand2;
 }
 
-:getmemsize SOperand0 is inFuncBody=1 & opc=0x81; opc=0x02; _1Operand; SOperand0 {
+:getmemsize SOperand0
+is inFuncBody=1 & opc=0x81; opc=0x02; _1Operand; SOperand0 {
 	OUT = getmemsize();
 	build SOperand0;
 }
 
-:quit is inFuncBody=1 & opc=0x81; opc=0x20 {
+:quit
+is inFuncBody=1 & opc=0x81; opc=0x20 {
 	tmp:4 = quit();
 	return [tmp];
 }
 
-:restoreundo Operand0 is inFuncBody=1 & opc=0x81; opc=0x26; _1Operand; Operand0 {
+:restoreundo LOperand0
+is inFuncBody=1 & opc=0x81; opc=0x26; _1Operand; LOperand0 {
 	tmp:4 = restoreundo();
 	return [tmp];
 }
 
-:glk Operand0 Operand1 SOperand2 is inFuncBody=1 & opc=0x81; opc=0x30; _3Operands; Operand0; Operand1; SOperand2 {
-	OUT = glk(Operand0, Operand1);
+:glk LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x81; opc=0x30; _3Operands; LOperand0; LOperand1; SOperand2 {
+	OUT = glk(LOperand0, LOperand1);
 	build SOperand2;	
 }
 
-:binarysearch Operand0 Operand1 Operand2 Operand3 Operand4 Operand5 Operand6 SOperand7 is inFuncBody=1 & opc=0x81; opc=0x51; _8Operands; Operand0; Operand1; Operand2; Operand3; Operand4; Operand5; Operand6; SOperand7 {
-	OUT = binarysearch(Operand0, Operand1, Operand2, Operand3, Operand4, Operand5, Operand6);
+:binarysearch LOperand0 LOperand1 LOperand2 LOperand3 LOperand4 LOperand5 LOperand6 SOperand7
+is inFuncBody=1 & opc=0x81; opc=0x51; _8Operands; LOperand0; LOperand1; LOperand2; LOperand3; LOperand4; LOperand5; LOperand6; SOperand7 {
+	OUT = binarysearch(LOperand0, LOperand1, LOperand2, LOperand3, LOperand4, LOperand5, LOperand6);
 	build SOperand7;
 }
 
-:callf POperand0 SOperand1 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; POperand0; SOperand1 {
+:callf LOperand0 SOperand1
+is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; LOperand0; SOperand1 {
 	local oldsp:4 = SP;
-	#local target:4 = Operand0;
+	#local target:4 = LOperand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(POperand0);
+	OUT = fncall(LOperand0);
 	SP = oldsp;
 	build SOperand1;
 }
 
-:callfi POperand0 Operand1 SOperand2
-is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; POperand0; Operand1; SOperand2 {
+:callfi LOperand0 LOperand1 SOperand2
+is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; LOperand0; LOperand1; SOperand2 {
 	local oldsp:4 = SP;
-	#push(Operand1);
-	#local target:4 = Operand0;
+	#push(LOperand1);
+	#local target:4 = LOperand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(POperand0, Operand1);
+	OUT = fncall(LOperand0, LOperand1);
 	SP = oldsp;
 	build SOperand2;
 }
 
-:callfii POperand0 Operand1 Operand2 SOperand3
-is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; POperand0; Operand1; Operand2; SOperand3 {
+:callfii LOperand0 LOperand1 LOperand2 SOperand3
+is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; LOperand0; LOperand1; LOperand2; SOperand3 {
 	local oldsp:4 = SP;
-	#push(Operand2);
-	#push(Operand1);
+	#push(LOperand2);
+	#push(LOperand1);
 	#local target:4 = Operand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(POperand0, Operand1, Operand2);
+	OUT = fncall(LOperand0, LOperand1, LOperand2);
 	SP = oldsp;
 	build SOperand3;
 }
 
-:callfiii POperand0 Operand1 Operand2 Operand3 SOperand4
-is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; POperand0; Operand1; Operand2; Operand3; SOperand4 {
+:callfiii LOperand0 LOperand1 LOperand2 LOperand3 SOperand4
+is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; LOperand0; LOperand1; LOperand2; LOperand3; SOperand4 {
 	local oldsp:4 = SP;
-	#push(Operand3);
-	#push(Operand2);
-	#push(Operand1);
-	#local target:4 = Operand0;
+	#push(LOperand3);
+	#push(LOperand2);
+	#push(LOperand1);
+	#local target:4 = LOperand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(POperand0, Operand1, Operand2, Operand3);
+	OUT = fncall(LOperand0, LOperand1, LOperand2, LOperand3);
 	SP = oldsp;
 	build SOperand4;
 }

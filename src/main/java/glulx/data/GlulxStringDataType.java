@@ -47,39 +47,64 @@ public class GlulxStringDataType extends BuiltIn implements Dynamic {
 
 	@Override
 	public Object getValue(MemBuffer buf, Settings settings, int length) {
-		// TODO Auto-generated method stub
+		// XXX: Return null here. Returning a string here causes Ghidra to display the text in a truncated format.
+		// Returning null makes more text visible.
 		return null;
+//		try {
+//			// FIXME: Is there any way to avoid parsing twice, once for getRepresentation and once for getLength?
+//			Parsed parsed = parse(buf);
+//			return parsed.string;
+//		} catch (IOException e) {
+//			return "PARSING ERROR: " + e.getMessage();
+//		}
 	}
-
-	@Override
-	public String getRepresentation(MemBuffer buf, Settings settings, int length) {
-		// TODO
+	
+	private static class Parsed {
+		public String string;
+		public long length;
+	}
+	
+	private static Parsed parse(MemBuffer buf) throws IOException {
 		Program program = buf.getMemory().getProgram();
 		MemoryByteProvider provider = new MemoryByteProvider(program.getMemory(), program.getAddressFactory().getDefaultAddressSpace());
 		BinaryReader reader = new BinaryReader(provider, false);
 		BinaryReader tableReader = new BinaryReader(provider, false);
 		
+		GlulxHeader header = new GlulxHeader(reader);
+		reader.setPointerIndex(buf.getAddress().getOffset());
+		tableReader.setPointerIndex(header.getDecodingTable());
+		tableReader.readNextUnsignedInt(); // Table Length (ignored)
+		tableReader.readNextUnsignedInt(); // Number of Nodes (ignored)
+		long rootAddr = tableReader.readNextUnsignedInt(); // Root Node Addr
+		
+		tableReader.setPointerIndex(rootAddr);
+		
+		Parsed result = new Parsed();
+		result.string = GlulxString.decompressString(reader, tableReader);
+		result.length = reader.getPointerIndex() - buf.getAddress().getOffset();
+		return result;
+	}
+
+	@Override
+	public String getRepresentation(MemBuffer buf, Settings settings, int length) {
 		try {
-			GlulxHeader header = new GlulxHeader(reader);
-			reader.setPointerIndex(buf.getAddress().getOffset());
-			tableReader.setPointerIndex(header.getDecodingTable());
-			tableReader.readNextUnsignedInt(); // Table Length (ignored)
-			tableReader.readNextUnsignedInt(); // Number of Nodes (ignored)
-			long rootAddr = tableReader.readNextUnsignedInt(); // Root Node Addr
-			
-			tableReader.setPointerIndex(rootAddr);
-			
-			return GlulxString.decompressString(reader, tableReader);
+			// FIXME: Is there any way to avoid parsing twice, once for getRepresentation and once for getLength?
+			Parsed parsed = parse(buf);
+			return parsed.string;
 		} catch (IOException e) {
-			Msg.error(this, e);
 			return "PARSING ERROR: " + e.getMessage();
 		}
 	}
 
 	@Override
 	public int getLength(MemBuffer buf, int maxLength) {
-		// TODO
-		return 1;
+		try {
+			// XXX: maxLength is ignored, as it is in PngDataType, et al.
+			Parsed parsed = parse(buf);
+			return (int)parsed.length;
+		} catch (IOException e) {
+			return 1;
+		}
 	}
 
 	@Override

@@ -313,7 +313,8 @@ is inFuncBody=1 & opc=0x30; _3Operands; LOperand0; LOperand1; SOperand2 {
 	n = n - 1;
 	goto <check>;
 <docall>
-	OUT = fncalln(LOperand0, LOperand1);
+	local target:1 = *:1 LOperand0;
+	OUT = fncalln(target, LOperand1);
 	build SOperand2;
 }
 
@@ -450,7 +451,8 @@ is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; LOperand0; SOperand1 {
 	#local target:4 = LOperand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(LOperand0);
+	local target:1 = *:1 LOperand0;
+	OUT = fncall(&target);
 	SP = oldsp;
 	build SOperand1;
 }
@@ -462,7 +464,8 @@ is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; LOperand0; LOperand1; SOperand
 	#local target:4 = LOperand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(LOperand0, LOperand1);
+	local target:1 = *:1 LOperand0;
+	OUT = fncall(target, LOperand1);
 	SP = oldsp;
 	build SOperand2;
 }
@@ -475,7 +478,8 @@ is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; LOperand0; LOperand1; LOperand
 	#local target:4 = Operand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(LOperand0, LOperand1, LOperand2);
+	local target:1 = *:1 LOperand0;
+	OUT = fncall(target, LOperand1, LOperand2);
 	SP = oldsp;
 	build SOperand3;
 }
@@ -489,7 +493,8 @@ is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; LOperand0; LOperand1; LOperand
 	#local target:4 = LOperand0;
 	#call [target];
 	#OUT = RET;
-	OUT = fncall(LOperand0, LOperand1, LOperand2, LOperand3);
+	local target:1 = *:1 LOperand0;
+	OUT = fncall(target, LOperand1, LOperand2, LOperand3);
 	SP = oldsp;
 	build SOperand4;
 }

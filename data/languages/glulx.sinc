@@ -72,6 +72,9 @@ Imm8: imm8 is imm8 { export *[const]:1 imm8; }
 Imm16: imm16 is imm16 { export *[const]:2 imm16; }
 Imm32: imm32 is imm32 { export *[const]:4 imm32; }
 
+# TODO: Test Local8 when imm8 is in 0x80-0xff (watch for sign extension error; it should be zero-extended.)
+Local8: imm8 is imm8 { export *[local]:4 imm8; }
+
 _1Operand:  is opty0 [ operType0 = opty0; ] {}
 _2Operands: is opty0 & opty1 [ operType0 = opty0; operType1 = opty1; ] {}
 _3Operands: is opty0 & opty1; opty2 [ operType0 = opty0; operType1 = opty1; operType2 = opty2; ] {}
@@ -93,7 +96,7 @@ LOperand: Imm8  is currOperType=0x1; Imm8  { local val:4 = sext(Imm8); export va
 LOperand: Imm16 is currOperType=0x2; Imm16 { local val:4 = sext(Imm16); export val; }
 LOperand: Imm32 is currOperType=0x3; Imm32 { export Imm32; }
 LOperand: "pop" is currOperType=0x8        { local val:4; pop(val); export val; }
-LOperand: Imm8  is currOperType=0x9; Imm8  { local offs:4 = zext(Imm8); export *[local]:4 offs; }
+LOperand: Local8 is currOperType=0x9; Local8 { export Local8; }
 LOperand: Imm8  is currOperType=0xD; Imm8  { local addr:4 = RAMSTART + zext(Imm8); export *:4 addr; }
 LOperand: Imm16 is currOperType=0xE; Imm16 { local addr:4 = RAMSTART + zext(Imm16); export *:4 addr; }
 LOperand: Imm32 is currOperType=0xF; Imm32 { local addr:4 = RAMSTART + Imm32; export *:4 addr; }
@@ -112,7 +115,7 @@ LOperand6: LOperand is FetchOperType6; LOperand { local tmp:4 = LOperand; export
 
 SOperand:        is currOperType=0x0        { } # Discard
 SOperand: "push" is currOperType=0x8        { push(OUT); }
-SOperand: Imm8   is currOperType=0x9; Imm8  { local offs:4 = zext(Imm8); *[local]:4 offs = OUT; }
+SOperand: Local8 is currOperType=0x9; Local8 { Local8 = OUT; }
 SOperand: Imm8   is currOperType=0xD; Imm8  { local addr:4 = RAMSTART + zext(Imm8); *:4 addr = OUT; }
 SOperand: Imm16  is currOperType=0xE; Imm16 { local addr:4 = RAMSTART + zext(Imm16); *:4 addr = OUT; }
 

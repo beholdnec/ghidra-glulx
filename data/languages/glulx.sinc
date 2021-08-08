@@ -127,15 +127,39 @@ SOperand5: SOperand is FetchOperType5; SOperand { }
 SOperand6: SOperand is FetchOperType6; SOperand { }
 SOperand7: SOperand is FetchOperType7; SOperand { }
 
-BrTargetOperand: "ret0" is currOperType=0x0             [ branchAction=$(BR_RET0); ]         { BRTARGET = inst_next; }
-BrTargetOperand: "ret1" is currOperType=0x1; simm8=0x01 [ branchAction=$(BR_RET1); ]         { BRTARGET = inst_next; }
-BrTargetOperand: target is currOperType=0x1; simm8      [ target = inst_next + simm8 - 2; ]  { BRTARGET = target; }
-BrTargetOperand: target is currOperType=0x2; simm16     [ target = inst_next + simm16 - 2; ] { BRTARGET = target; }
-BrTargetOperand: target is currOperType=0x3; imm32      [ target = inst_next + imm32 - 2; ]  { BRTARGET = target; }
-# This constructor is required to work around a Ghidra bug where an old currOperType is used for matching.
-# The new currOperType is used for parsing and building.
-# FIXME: This seems to be a bug in Ghidra, or at least it is very unintuitive behavior.
-BrTargetOperand: "***ERROR: UNKNOWN OPER TYPE***" currOperType is currOperType               { BRTARGET = inst_next; }
+BrTargetOperand: "ret0" is currOperType=0x0 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 0;
+	return [RA];
+}
+
+BrTargetOperand: "ret1" is currOperType=0x1; simm8=0x01 {
+	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
+	RET = 1;
+	return [RA];
+}
+
+BrAddr8: target is simm8 [ target = inst_next + simm8 - 2; ] { export *:1 target; }
+BrAddr16: target is simm16 [ target = inst_next + simm16 - 2; ] { export *:1 target; }
+BrAddr32: target is imm32 [ target = inst_next + imm32 - 2; ] { export *:1 target; }
+
+BrTargetOperand: BrAddr8 is currOperType=0x1; BrAddr8 {
+	if (CMP) goto BrAddr8;
+}
+
+BrTargetOperand: BrAddr16 is currOperType=0x2; BrAddr16 {
+	if (CMP) goto BrAddr16;
+}
+
+BrTargetOperand: BrAddr32 is currOperType=0x3; BrAddr32 {
+	if (CMP) goto BrAddr32;
+}
+
+# This constructor is required to work around a Ghidra bug:
+# An old currOperType is used for pattern matching.
+# A new currOperType is used for parsing and building.
+# FIXME: This appears to be a bug in Ghidra, or, at least, it is very unintuitive behavior.
+BrTargetOperand: "***ERROR: UNKNOWN OPER TYPE***" currOperType is currOperType { }
 
 BrTargetOperand0: BrTargetOperand is FetchOperType0; BrTargetOperand { }
 BrTargetOperand1: BrTargetOperand is FetchOperType1; BrTargetOperand { }
@@ -178,7 +202,7 @@ funcLocals: imm16 funcLocals is imm16; funcLocals {
 	build SOperand2;
 }
 
-:div LOperand0 LOperand1 SOperand2
+:mod LOperand0 LOperand1 SOperand2
 is inFuncBody=1 & opc=0x14; _3Operands; LOperand0; LOperand1; SOperand2 {
 	OUT = LOperand0 s% LOperand1;
 	build SOperand2;
@@ -214,93 +238,64 @@ is inFuncBody=1 & opc=0x1E; _3Operands; LOperand0; LOperand1; SOperand2 {
 	build SOperand2;
 }
 
-BranchAction: is branchAction=$(BR_RET0) {
-	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 0;
-	return [RA];
-}
-
-BranchAction: is branchAction=$(BR_RET1) {
-	if (!CMP) goto inst_next; # XXX: return cannot be placed in an if statement, so do this instead.
-	RET = 1;
-	return [RA];
-}
-
-BranchAction: is epsilon {
-	if (!CMP) goto inst_next; # XXX: indirect branch cannot be placed in an if statement, so do this instead.
-	goto [BRTARGET];
-}
-
 :jump BrTargetOperand0
-is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0; BranchAction {
+is inFuncBody=1 & opc=0x20; _1Operand; BrTargetOperand0 {
 	CMP = 1;
 	build BrTargetOperand0;
-	build BranchAction;
 }
 
 :jz LOperand0 BrTargetOperand1
-is inFuncBody=1 & opc=0x22; _2Operands; LOperand0; BrTargetOperand1; BranchAction {
+is inFuncBody=1 & opc=0x22; _2Operands; LOperand0; BrTargetOperand1 {
 	CMP = LOperand0 == 0;
 	build BrTargetOperand1;
-	build BranchAction;
 }
 
 :jnz LOperand0 BrTargetOperand1
-is inFuncBody=1 & opc=0x23; _2Operands; LOperand0; BrTargetOperand1; BranchAction {
+is inFuncBody=1 & opc=0x23; _2Operands; LOperand0; BrTargetOperand1 {
 	CMP = LOperand0 != 0;
 	build BrTargetOperand1;
-	build BranchAction;
 }
 
 :jeq LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x24; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+is inFuncBody=1 & opc=0x24; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
 	CMP = LOperand0 == LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :jne LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x25; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+is inFuncBody=1 & opc=0x25; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
 	CMP = LOperand0 != LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :jlt LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x26; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+is inFuncBody=1 & opc=0x26; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
 	CMP = LOperand0 s< LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :jge LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x27; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
-	local op0 = LOperand0;
-	local op1 = LOperand1;
-	CMP = op0 s>= op1;
+is inFuncBody=1 & opc=0x27; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
+	CMP = LOperand0 s>= LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :jgt LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x28; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+is inFuncBody=1 & opc=0x28; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
 	CMP = LOperand0 s> LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :jle LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x29; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+is inFuncBody=1 & opc=0x29; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
 	CMP = LOperand0 s<= LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :jgeu LOperand0 LOperand1 BrTargetOperand2
-is inFuncBody=1 & opc=0x2B; _3Operands; LOperand0; LOperand1; BrTargetOperand2; BranchAction {
+is inFuncBody=1 & opc=0x2B; _3Operands; LOperand0; LOperand1; BrTargetOperand2 {
 	CMP = LOperand0 >= LOperand1;
 	build BrTargetOperand2;
-	build BranchAction;
 }
 
 :call LOperand0 LOperand1 SOperand2

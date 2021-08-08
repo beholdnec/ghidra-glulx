@@ -463,7 +463,7 @@
 <operand_sym_head name="SOperand4" id="0x166" scope="0x5a"/>
 <operand_sym_head name="_5Operands" id="0x167" scope="0x5a"/>
 <subtable_sym name="instruction" id="0x0" scope="0x0" numct="51">
-<constructor parent="0x0" first="1" length="3" line="0:153">
+<constructor parent="0x0" first="1" length="3" line="0:152">
 <oper id="0xb0"/>
 <print piece="funcC0"/>
 <print piece=" "/>
@@ -474,7 +474,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:156">
+<constructor parent="0x0" first="1" length="3" line="0:155">
 <oper id="0xb1"/>
 <print piece="funcC1"/>
 <print piece=" "/>
@@ -485,12 +485,12 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="1" line="0:159">
+<constructor parent="0x0" first="1" length="1" line="0:158">
 <print piece="nop"/>
 <construct_tpl>
 <null/></construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:162">
+<constructor parent="0x0" first="1" length="3" line="0:161">
 <oper id="0xb5"/>
 <oper id="0xb2"/>
 <oper id="0xb3"/>
@@ -521,7 +521,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:167">
+<constructor parent="0x0" first="1" length="3" line="0:166">
 <oper id="0xb9"/>
 <oper id="0xb6"/>
 <oper id="0xb7"/>
@@ -552,7 +552,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:172">
+<constructor parent="0x0" first="1" length="3" line="0:171">
 <oper id="0xbd"/>
 <oper id="0xba"/>
 <oper id="0xbb"/>
@@ -583,7 +583,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:177">
+<constructor parent="0x0" first="1" length="3" line="0:176">
 <oper id="0xc1"/>
 <oper id="0xbe"/>
 <oper id="0xbf"/>
@@ -614,7 +614,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:182">
+<constructor parent="0x0" first="1" length="3" line="0:181">
 <oper id="0xc5"/>
 <oper id="0xc2"/>
 <oper id="0xc3"/>
@@ -645,7 +645,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:188">
+<constructor parent="0x0" first="1" length="2" line="0:187">
 <oper id="0xc8"/>
 <oper id="0xc6"/>
 <oper id="0xc7"/>
@@ -669,7 +669,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:194">
+<constructor parent="0x0" first="1" length="3" line="0:193">
 <oper id="0xcc"/>
 <oper id="0xc9"/>
 <oper id="0xca"/>
@@ -700,7 +700,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:200">
+<constructor parent="0x0" first="1" length="3" line="0:199">
 <oper id="0xd0"/>
 <oper id="0xcd"/>
 <oper id="0xce"/>
@@ -731,7 +731,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:206">
+<constructor parent="0x0" first="1" length="2" line="0:205">
 <oper id="0xd3"/>
 <oper id="0xd1"/>
 <oper id="0xd2"/>
@@ -755,7 +755,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:212">
+<constructor parent="0x0" first="1" length="3" line="0:211">
 <oper id="0xd7"/>
 <oper id="0xd4"/>
 <oper id="0xd5"/>
@@ -786,7 +786,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:235">
+<constructor parent="0x0" first="1" length="2" line="0:234">
 <oper id="0xda"/>
 <oper id="0xd9"/>
 <oper id="0xdb"/>
@@ -808,7 +808,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:242">
+<constructor parent="0x0" first="1" length="2" line="0:241">
 <oper id="0xde"/>
 <oper id="0xdc"/>
 <oper id="0xdd"/>
@@ -837,7 +837,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:249">
+<constructor parent="0x0" first="1" length="2" line="0:248">
 <oper id="0xe2"/>
 <oper id="0xe0"/>
 <oper id="0xe1"/>
@@ -866,7 +866,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:256">
+<constructor parent="0x0" first="1" length="3" line="0:255">
 <oper id="0xe7"/>
 <oper id="0xe4"/>
 <oper id="0xe5"/>
@@ -901,7 +901,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:263">
+<constructor parent="0x0" first="1" length="3" line="0:262">
 <oper id="0xec"/>
 <oper id="0xe9"/>
 <oper id="0xea"/>
@@ -936,7 +936,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:270">
+<constructor parent="0x0" first="1" length="3" line="0:269">
 <oper id="0xf1"/>
 <oper id="0xee"/>
 <oper id="0xef"/>
@@ -971,7 +971,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:277">
+<constructor parent="0x0" first="1" length="3" line="0:276">
 <oper id="0xf6"/>
 <oper id="0xf3"/>
 <oper id="0xf4"/>
@@ -1006,7 +1006,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:286">
+<constructor parent="0x0" first="1" length="3" line="0:285">
 <oper id="0xfb"/>
 <oper id="0xf8"/>
 <oper id="0xf9"/>
@@ -1041,7 +1041,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:293">
+<constructor parent="0x0" first="1" length="3" line="0:292">
 <oper id="0x100"/>
 <oper id="0xfd"/>
 <oper id="0xfe"/>
@@ -1076,7 +1076,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:300">
+<constructor parent="0x0" first="1" length="3" line="0:299">
 <oper id="0x105"/>
 <oper id="0x102"/>
 <oper id="0x103"/>
@@ -1111,7 +1111,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:307">
+<constructor parent="0x0" first="1" length="3" line="0:306">
 <oper id="0x10a"/>
 <oper id="0x107"/>
 <oper id="0x108"/>
@@ -1183,7 +1183,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:325">
+<constructor parent="0x0" first="1" length="2" line="0:324">
 <oper id="0x10c"/>
 <oper id="0x10b"/>
 <print piece="return"/>
@@ -1204,7 +1204,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:330">
+<constructor parent="0x0" first="1" length="2" line="0:329">
 <oper id="0x10f"/>
 <oper id="0x10d"/>
 <oper id="0x10e"/>
@@ -1228,7 +1228,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:335">
+<constructor parent="0x0" first="1" length="3" line="0:334">
 <oper id="0x113"/>
 <oper id="0x110"/>
 <oper id="0x111"/>
@@ -1267,7 +1267,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:342">
+<constructor parent="0x0" first="1" length="3" line="0:341">
 <oper id="0x117"/>
 <oper id="0x114"/>
 <oper id="0x115"/>
@@ -1309,7 +1309,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:349">
+<constructor parent="0x0" first="1" length="3" line="0:348">
 <oper id="0x11b"/>
 <oper id="0x118"/>
 <oper id="0x119"/>
@@ -1347,7 +1347,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:356">
+<constructor parent="0x0" first="1" length="3" line="0:355">
 <oper id="0x11f"/>
 <oper id="0x11c"/>
 <oper id="0x11d"/>
@@ -1379,7 +1379,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:362">
+<constructor parent="0x0" first="1" length="3" line="0:361">
 <oper id="0x123"/>
 <oper id="0x120"/>
 <oper id="0x121"/>
@@ -1419,7 +1419,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:368">
+<constructor parent="0x0" first="1" length="3" line="0:367">
 <oper id="0x127"/>
 <oper id="0x124"/>
 <oper id="0x125"/>
@@ -1459,7 +1459,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:375">
+<constructor parent="0x0" first="1" length="3" line="0:374">
 <oper id="0x12b"/>
 <oper id="0x128"/>
 <oper id="0x129"/>
@@ -1495,7 +1495,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:381">
+<constructor parent="0x0" first="1" length="3" line="0:380">
 <oper id="0x12f"/>
 <oper id="0x12c"/>
 <oper id="0x12d"/>
@@ -1528,7 +1528,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:387">
+<constructor parent="0x0" first="1" length="2" line="0:386">
 <oper id="0x131"/>
 <oper id="0x130"/>
 <print piece="stkcopy"/>
@@ -1589,7 +1589,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:401">
+<constructor parent="0x0" first="1" length="2" line="0:400">
 <oper id="0x133"/>
 <oper id="0x132"/>
 <print piece="streamchar"/>
@@ -1608,7 +1608,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:405">
+<constructor parent="0x0" first="1" length="2" line="0:404">
 <oper id="0x135"/>
 <oper id="0x134"/>
 <print piece="streamnum"/>
@@ -1627,7 +1627,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:409">
+<constructor parent="0x0" first="1" length="2" line="0:408">
 <oper id="0x137"/>
 <oper id="0x136"/>
 <print piece="streamstr"/>
@@ -1646,7 +1646,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:413">
+<constructor parent="0x0" first="1" length="2" line="0:412">
 <oper id="0x139"/>
 <oper id="0x138"/>
 <print piece="streamunichar"/>
@@ -1665,7 +1665,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:417">
+<constructor parent="0x0" first="1" length="4" line="0:416">
 <oper id="0x13d"/>
 <oper id="0x13e"/>
 <oper id="0x13a"/>
@@ -1698,7 +1698,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:423">
+<constructor parent="0x0" first="1" length="3" line="0:422">
 <oper id="0x140"/>
 <oper id="0x13f"/>
 <print piece="getmemsize"/>
@@ -1716,7 +1716,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:429">
+<constructor parent="0x0" first="1" length="3" line="0:428">
 <oper id="0x143"/>
 <oper id="0x141"/>
 <oper id="0x142"/>
@@ -1741,7 +1741,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="2" line="0:435">
+<constructor parent="0x0" first="1" length="2" line="0:434">
 <print piece="quit"/>
 <construct_tpl>
 <null/><op_tpl code="CALLOTHER"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x3300"/><const_tpl type="real" val="0x4"/></varnode_tpl>
@@ -1752,7 +1752,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:441">
+<constructor parent="0x0" first="1" length="3" line="0:440">
 <oper id="0x145"/>
 <oper id="0x144"/>
 <print piece="restoreundo"/>
@@ -1773,7 +1773,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:447">
+<constructor parent="0x0" first="1" length="4" line="0:446">
 <oper id="0x149"/>
 <oper id="0x146"/>
 <oper id="0x147"/>
@@ -1805,7 +1805,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:453">
+<constructor parent="0x0" first="1" length="3" line="0:452">
 <oper id="0x14c"/>
 <oper id="0x14a"/>
 <oper id="0x14b"/>
@@ -1831,7 +1831,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="6" line="0:458">
+<constructor parent="0x0" first="1" length="6" line="0:457">
 <oper id="0x155"/>
 <oper id="0x14d"/>
 <oper id="0x14e"/>
@@ -1898,7 +1898,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="3" line="0:464">
+<constructor parent="0x0" first="1" length="3" line="0:463">
 <oper id="0x158"/>
 <oper id="0x156"/>
 <oper id="0x157"/>
@@ -1931,7 +1931,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:474">
+<constructor parent="0x0" first="1" length="4" line="0:473">
 <oper id="0x15c"/>
 <oper id="0x159"/>
 <oper id="0x15a"/>
@@ -1979,7 +1979,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="4" line="0:485">
+<constructor parent="0x0" first="1" length="4" line="0:484">
 <oper id="0x161"/>
 <oper id="0x15d"/>
 <oper id="0x15e"/>
@@ -2042,7 +2042,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x0" first="1" length="5" line="0:497">
+<constructor parent="0x0" first="1" length="5" line="0:496">
 <oper id="0x167"/>
 <oper id="0x162"/>
 <oper id="0x163"/>
@@ -3790,7 +3790,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="0" bitend="31" bytestart="0" byteend="3" shift="0"/>
 </operand_sym>
 <subtable_sym name="Local8" id="0x42" scope="0x0" numct="1">
-<constructor parent="0x42" first="1" length="1" line="0:76">
+<constructor parent="0x42" first="1" length="1" line="0:75">
 <oper id="0x43"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -3811,7 +3811,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="0" bitend="7" bytestart="0" byteend="0" shift="0"/>
 </operand_sym>
 <subtable_sym name="_1Operand" id="0x44" scope="0x0" numct="1">
-<constructor parent="0x44" first="-1" length="1" line="0:78">
+<constructor parent="0x44" first="-1" length="1" line="0:77">
 <oper id="0x45"/>
 <context_op i="0" shift="21" mask="0x1e00000" >
 <operand_exp index="0" table="0x44" ct="0x0"/>
@@ -3833,7 +3833,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="0" bitend="3" bytestart="0" byteend="0" shift="0"/>
 </operand_sym>
 <subtable_sym name="_2Operands" id="0x46" scope="0x0" numct="1">
-<constructor parent="0x46" first="-1" length="1" line="0:79">
+<constructor parent="0x46" first="-1" length="1" line="0:78">
 <oper id="0x47"/>
 <oper id="0x48"/>
 <context_op i="0" shift="21" mask="0x1e00000" >
@@ -3863,7 +3863,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="4" bitend="7" bytestart="0" byteend="0" shift="4"/>
 </operand_sym>
 <subtable_sym name="_3Operands" id="0x49" scope="0x0" numct="1">
-<constructor parent="0x49" first="-1" length="2" line="0:80">
+<constructor parent="0x49" first="-1" length="2" line="0:79">
 <oper id="0x4a"/>
 <oper id="0x4b"/>
 <oper id="0x4c"/>
@@ -3901,7 +3901,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="0" bitend="3" bytestart="0" byteend="0" shift="0"/>
 </operand_sym>
 <subtable_sym name="_4Operands" id="0x4d" scope="0x0" numct="1">
-<constructor parent="0x4d" first="-1" length="2" line="0:81">
+<constructor parent="0x4d" first="-1" length="2" line="0:80">
 <oper id="0x4e"/>
 <oper id="0x4f"/>
 <oper id="0x50"/>
@@ -3947,7 +3947,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="4" bitend="7" bytestart="0" byteend="0" shift="4"/>
 </operand_sym>
 <subtable_sym name="_5Operands" id="0x52" scope="0x0" numct="1">
-<constructor parent="0x52" first="-1" length="3" line="0:82">
+<constructor parent="0x52" first="-1" length="3" line="0:81">
 <oper id="0x53"/>
 <oper id="0x54"/>
 <oper id="0x55"/>
@@ -4001,7 +4001,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="0" bitend="3" bytestart="0" byteend="0" shift="0"/>
 </operand_sym>
 <subtable_sym name="_8Operands" id="0x58" scope="0x0" numct="1">
-<constructor parent="0x58" first="-1" length="4" line="0:83">
+<constructor parent="0x58" first="-1" length="4" line="0:82">
 <oper id="0x59"/>
 <oper id="0x5a"/>
 <oper id="0x5b"/>
@@ -4079,7 +4079,7 @@
 <tokenfield bigendian="true" signbit="false" bitstart="4" bitend="7" bytestart="0" byteend="0" shift="4"/>
 </operand_sym>
 <subtable_sym name="FetchOperType0" id="0x61" scope="0x0" numct="1">
-<constructor parent="0x61" first="-1" length="0" line="0:85">
+<constructor parent="0x61" first="-1" length="0" line="0:84">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="7" endbit="10" startbyte="0" endbyte="1" shift="5"/>
 </context_op>
@@ -4096,7 +4096,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType1" id="0x62" scope="0x0" numct="1">
-<constructor parent="0x62" first="-1" length="0" line="0:86">
+<constructor parent="0x62" first="-1" length="0" line="0:85">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="11" endbit="14" startbyte="1" endbyte="1" shift="1"/>
 </context_op>
@@ -4113,7 +4113,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType2" id="0x63" scope="0x0" numct="1">
-<constructor parent="0x63" first="-1" length="0" line="0:87">
+<constructor parent="0x63" first="-1" length="0" line="0:86">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="15" endbit="18" startbyte="1" endbyte="2" shift="5"/>
 </context_op>
@@ -4130,7 +4130,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType3" id="0x64" scope="0x0" numct="1">
-<constructor parent="0x64" first="-1" length="0" line="0:88">
+<constructor parent="0x64" first="-1" length="0" line="0:87">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="19" endbit="22" startbyte="2" endbyte="2" shift="1"/>
 </context_op>
@@ -4147,7 +4147,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType4" id="0x65" scope="0x0" numct="1">
-<constructor parent="0x65" first="-1" length="0" line="0:89">
+<constructor parent="0x65" first="-1" length="0" line="0:88">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="23" endbit="26" startbyte="2" endbyte="3" shift="5"/>
 </context_op>
@@ -4164,7 +4164,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType5" id="0x66" scope="0x0" numct="1">
-<constructor parent="0x66" first="-1" length="0" line="0:90">
+<constructor parent="0x66" first="-1" length="0" line="0:89">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="27" endbit="30" startbyte="3" endbyte="3" shift="1"/>
 </context_op>
@@ -4181,7 +4181,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType6" id="0x67" scope="0x0" numct="1">
-<constructor parent="0x67" first="-1" length="0" line="0:91">
+<constructor parent="0x67" first="-1" length="0" line="0:90">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="32" endbit="35" startbyte="4" endbyte="4" shift="4"/>
 </context_op>
@@ -4198,7 +4198,7 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="FetchOperType7" id="0x68" scope="0x0" numct="1">
-<constructor parent="0x68" first="-1" length="0" line="0:92">
+<constructor parent="0x68" first="-1" length="0" line="0:91">
 <context_op i="0" shift="25" mask="0x1e000000" >
 <contextfield signbit="false" startbit="36" endbit="39" startbyte="4" endbyte="4" shift="0"/>
 </context_op>
@@ -4215,13 +4215,13 @@
 </decision>
 </subtable_sym>
 <subtable_sym name="LOperand" id="0x69" scope="0x0" numct="9">
-<constructor parent="0x69" first="1" length="0" line="0:94">
+<constructor parent="0x69" first="1" length="0" line="0:93">
 <print piece="0"/>
 <construct_tpl>
 <handle_tpl><const_tpl type="spaceid" name="const"/><const_tpl type="real" val="0x4"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x0"/></handle_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="1" line="0:95">
+<constructor parent="0x69" first="1" length="1" line="0:94">
 <oper id="0x6a"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4234,7 +4234,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="2" line="0:96">
+<constructor parent="0x69" first="1" length="2" line="0:95">
 <oper id="0x6b"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4247,7 +4247,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="4" line="0:97">
+<constructor parent="0x69" first="1" length="4" line="0:96">
 <oper id="0x6c"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4257,7 +4257,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="0" line="0:98">
+<constructor parent="0x69" first="1" length="0" line="0:97">
 <print piece="pop"/>
 <construct_tpl>
 <handle_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x4"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x580"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x0"/><const_tpl type="real" val="0x0"/></handle_tpl>
@@ -4271,7 +4271,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="1" line="0:99">
+<constructor parent="0x69" first="1" length="1" line="0:98">
 <oper id="0x6d"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4281,7 +4281,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="1" line="0:100">
+<constructor parent="0x69" first="1" length="1" line="0:99">
 <oper id="0x6e"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4298,7 +4298,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="2" line="0:101">
+<constructor parent="0x69" first="1" length="2" line="0:100">
 <oper id="0x6f"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4315,7 +4315,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x69" first="1" length="4" line="0:102">
+<constructor parent="0x69" first="1" length="4" line="0:101">
 <oper id="0x70"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4449,7 +4449,7 @@
 <operand_exp index="0" table="0x69" ct="0x8"/>
 </operand_sym>
 <subtable_sym name="LOperand0" id="0x71" scope="0x0" numct="1">
-<constructor parent="0x71" first="1" length="0" line="0:108">
+<constructor parent="0x71" first="1" length="0" line="0:107">
 <oper id="0x73"/>
 <oper id="0x72"/>
 <opprint id="1"/>
@@ -4482,7 +4482,7 @@
 <operand_exp index="0" table="0x71" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="LOperand1" id="0x74" scope="0x0" numct="1">
-<constructor parent="0x74" first="1" length="0" line="0:109">
+<constructor parent="0x74" first="1" length="0" line="0:108">
 <oper id="0x76"/>
 <oper id="0x75"/>
 <opprint id="1"/>
@@ -4515,7 +4515,7 @@
 <operand_exp index="0" table="0x74" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="LOperand2" id="0x77" scope="0x0" numct="1">
-<constructor parent="0x77" first="1" length="0" line="0:110">
+<constructor parent="0x77" first="1" length="0" line="0:109">
 <oper id="0x79"/>
 <oper id="0x78"/>
 <opprint id="1"/>
@@ -4548,7 +4548,7 @@
 <operand_exp index="0" table="0x77" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="LOperand3" id="0x7a" scope="0x0" numct="1">
-<constructor parent="0x7a" first="1" length="0" line="0:111">
+<constructor parent="0x7a" first="1" length="0" line="0:110">
 <oper id="0x7c"/>
 <oper id="0x7b"/>
 <opprint id="1"/>
@@ -4581,7 +4581,7 @@
 <operand_exp index="0" table="0x7a" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="LOperand4" id="0x7d" scope="0x0" numct="1">
-<constructor parent="0x7d" first="1" length="0" line="0:112">
+<constructor parent="0x7d" first="1" length="0" line="0:111">
 <oper id="0x7f"/>
 <oper id="0x7e"/>
 <opprint id="1"/>
@@ -4614,7 +4614,7 @@
 <operand_exp index="0" table="0x7d" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="LOperand5" id="0x80" scope="0x0" numct="1">
-<constructor parent="0x80" first="1" length="0" line="0:113">
+<constructor parent="0x80" first="1" length="0" line="0:112">
 <oper id="0x82"/>
 <oper id="0x81"/>
 <opprint id="1"/>
@@ -4647,7 +4647,7 @@
 <operand_exp index="0" table="0x80" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="LOperand6" id="0x83" scope="0x0" numct="1">
-<constructor parent="0x83" first="1" length="0" line="0:114">
+<constructor parent="0x83" first="1" length="0" line="0:113">
 <oper id="0x85"/>
 <oper id="0x84"/>
 <opprint id="1"/>
@@ -4680,11 +4680,11 @@
 <operand_exp index="0" table="0x83" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="SOperand" id="0x86" scope="0x0" numct="5">
-<constructor parent="0x86" first="-1" length="0" line="0:116">
+<constructor parent="0x86" first="-1" length="0" line="0:115">
 <construct_tpl>
 <null/></construct_tpl>
 </constructor>
-<constructor parent="0x86" first="1" length="0" line="0:117">
+<constructor parent="0x86" first="1" length="0" line="0:116">
 <print piece="push"/>
 <construct_tpl>
 <null/><op_tpl code="STORE"><null/>
@@ -4698,7 +4698,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x86" first="1" length="1" line="0:118">
+<constructor parent="0x86" first="1" length="1" line="0:117">
 <oper id="0x87"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4710,7 +4710,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x86" first="1" length="1" line="0:119">
+<constructor parent="0x86" first="1" length="1" line="0:118">
 <oper id="0x88"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4731,7 +4731,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x86" first="1" length="2" line="0:120">
+<constructor parent="0x86" first="1" length="2" line="0:119">
 <oper id="0x89"/>
 <opprint id="0"/>
 <construct_tpl>
@@ -4832,7 +4832,7 @@
 <operand_exp index="0" table="0x86" ct="0x4"/>
 </operand_sym>
 <subtable_sym name="SOperand0" id="0x8a" scope="0x0" numct="1">
-<constructor parent="0x8a" first="1" length="0" line="0:122">
+<constructor parent="0x8a" first="1" length="0" line="0:121">
 <oper id="0x8c"/>
 <oper id="0x8b"/>
 <opprint id="1"/>
@@ -4861,7 +4861,7 @@
 <operand_exp index="0" table="0x8a" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="SOperand1" id="0x8d" scope="0x0" numct="1">
-<constructor parent="0x8d" first="1" length="0" line="0:123">
+<constructor parent="0x8d" first="1" length="0" line="0:122">
 <oper id="0x8f"/>
 <oper id="0x8e"/>
 <opprint id="1"/>
@@ -4890,7 +4890,7 @@
 <operand_exp index="0" table="0x8d" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="SOperand2" id="0x90" scope="0x0" numct="1">
-<constructor parent="0x90" first="1" length="0" line="0:124">
+<constructor parent="0x90" first="1" length="0" line="0:123">
 <oper id="0x92"/>
 <oper id="0x91"/>
 <opprint id="1"/>
@@ -4919,7 +4919,7 @@
 <operand_exp index="0" table="0x90" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="SOperand3" id="0x93" scope="0x0" numct="1">
-<constructor parent="0x93" first="1" length="0" line="0:125">
+<constructor parent="0x93" first="1" length="0" line="0:124">
 <oper id="0x95"/>
 <oper id="0x94"/>
 <opprint id="1"/>
@@ -4948,7 +4948,7 @@
 <operand_exp index="0" table="0x93" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="SOperand4" id="0x96" scope="0x0" numct="1">
-<constructor parent="0x96" first="1" length="0" line="0:126">
+<constructor parent="0x96" first="1" length="0" line="0:125">
 <oper id="0x98"/>
 <oper id="0x97"/>
 <opprint id="1"/>
@@ -4977,7 +4977,7 @@
 <operand_exp index="0" table="0x96" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="SOperand7" id="0x99" scope="0x0" numct="1">
-<constructor parent="0x99" first="1" length="0" line="0:129">
+<constructor parent="0x99" first="1" length="0" line="0:128">
 <oper id="0x9b"/>
 <oper id="0x9a"/>
 <opprint id="1"/>
@@ -5006,7 +5006,7 @@
 <operand_exp index="0" table="0x99" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="BrTargetOperand" id="0x9c" scope="0x0" numct="6">
-<constructor parent="0x9c" first="1" length="0" line="0:131">
+<constructor parent="0x9c" first="1" length="0" line="0:130">
 <print piece="ret0"/>
 <context_op i="0" shift="29" mask="0x60000000" >
 <intb val="1"/>
@@ -5017,7 +5017,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x9c" first="1" length="1" line="0:132">
+<constructor parent="0x9c" first="1" length="1" line="0:131">
 <print piece="ret1"/>
 <context_op i="0" shift="29" mask="0x60000000" >
 <intb val="2"/>
@@ -5028,7 +5028,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x9c" first="1" length="1" line="0:133">
+<constructor parent="0x9c" first="1" length="1" line="0:132">
 <oper id="0x9e"/>
 <oper id="0x9d"/>
 <opprint id="1"/>
@@ -5038,7 +5038,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x9c" first="1" length="2" line="0:134">
+<constructor parent="0x9c" first="1" length="2" line="0:133">
 <oper id="0xa0"/>
 <oper id="0x9f"/>
 <opprint id="1"/>
@@ -5048,7 +5048,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x9c" first="1" length="4" line="0:135">
+<constructor parent="0x9c" first="1" length="4" line="0:134">
 <oper id="0xa2"/>
 <oper id="0xa1"/>
 <opprint id="1"/>
@@ -5058,7 +5058,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0x9c" first="1" length="0" line="0:139">
+<constructor parent="0x9c" first="1" length="0" line="0:138">
 <oper id="0xa3"/>
 <print piece="***ERROR: UNKNOWN OPER TYPE***"/>
 <print piece=" "/>
@@ -5190,7 +5190,7 @@
 <contextfield signbit="false" startbit="3" endbit="6" startbyte="0" endbyte="0" shift="1"/>
 </operand_sym>
 <subtable_sym name="BrTargetOperand0" id="0xa4" scope="0x0" numct="1">
-<constructor parent="0xa4" first="1" length="0" line="0:141">
+<constructor parent="0xa4" first="1" length="0" line="0:140">
 <oper id="0xa6"/>
 <oper id="0xa5"/>
 <opprint id="1"/>
@@ -5219,7 +5219,7 @@
 <operand_exp index="0" table="0xa4" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="BrTargetOperand1" id="0xa7" scope="0x0" numct="1">
-<constructor parent="0xa7" first="1" length="0" line="0:142">
+<constructor parent="0xa7" first="1" length="0" line="0:141">
 <oper id="0xa9"/>
 <oper id="0xa8"/>
 <opprint id="1"/>
@@ -5248,7 +5248,7 @@
 <operand_exp index="0" table="0xa7" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="BrTargetOperand2" id="0xaa" scope="0x0" numct="1">
-<constructor parent="0xaa" first="1" length="0" line="0:143">
+<constructor parent="0xaa" first="1" length="0" line="0:142">
 <oper id="0xac"/>
 <oper id="0xab"/>
 <opprint id="1"/>
@@ -5277,7 +5277,7 @@
 <operand_exp index="0" table="0xaa" ct="0x0"/>
 </operand_sym>
 <subtable_sym name="funcLocals" id="0xad" scope="0x0" numct="2">
-<constructor parent="0xad" first="-1" length="2" line="0:147">
+<constructor parent="0xad" first="-1" length="2" line="0:146">
 <context_op i="0" shift="31" mask="0x80000000" >
 <intb val="1"/>
 </context_op>
@@ -5285,7 +5285,7 @@
 <construct_tpl>
 <null/></construct_tpl>
 </constructor>
-<constructor parent="0xad" first="1" length="2" line="0:150">
+<constructor parent="0xad" first="1" length="2" line="0:149">
 <oper id="0xae"/>
 <oper id="0xaf"/>
 <opprint id="0"/>
@@ -5441,7 +5441,7 @@
 <operand_exp index="0" table="0x0" ct="0xc"/>
 </operand_sym>
 <subtable_sym name="BranchAction" id="0xd8" scope="0x0" numct="3">
-<constructor parent="0xd8" first="-1" length="0" line="0:218">
+<constructor parent="0xd8" first="-1" length="0" line="0:217">
 <construct_tpl>
 <null/><op_tpl code="BOOL_NEGATE"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x1700"/><const_tpl type="real" val="0x1"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="register"/><const_tpl type="real" val="0x80"/><const_tpl type="real" val="0x1"/></varnode_tpl>
@@ -5458,7 +5458,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0xd8" first="-1" length="0" line="0:224">
+<constructor parent="0xd8" first="-1" length="0" line="0:223">
 <construct_tpl>
 <null/><op_tpl code="BOOL_NEGATE"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x1780"/><const_tpl type="real" val="0x1"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="register"/><const_tpl type="real" val="0x80"/><const_tpl type="real" val="0x1"/></varnode_tpl>
@@ -5475,7 +5475,7 @@
 </op_tpl>
 </construct_tpl>
 </constructor>
-<constructor parent="0xd8" first="-1" length="0" line="0:230">
+<constructor parent="0xd8" first="-1" length="0" line="0:229">
 <construct_tpl>
 <null/><op_tpl code="BOOL_NEGATE"><varnode_tpl><const_tpl type="spaceid" name="unique"/><const_tpl type="real" val="0x1800"/><const_tpl type="real" val="0x1"/></varnode_tpl>
 <varnode_tpl><const_tpl type="spaceid" name="register"/><const_tpl type="real" val="0x80"/><const_tpl type="real" val="0x1"/></varnode_tpl>

@@ -72,7 +72,6 @@ Imm8: imm8 is imm8 { export *[const]:1 imm8; }
 Imm16: imm16 is imm16 { export *[const]:2 imm16; }
 Imm32: imm32 is imm32 { export *[const]:4 imm32; }
 
-# TODO: Test Local8 when imm8 is in 0x80-0xff (watch for sign extension error; it should be zero-extended.)
 Local8: imm8 is imm8 { export *[local]:4 imm8; }
 
 _1Operand:  is opty0 [ operType0 = opty0; ] {}

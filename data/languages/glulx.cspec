@@ -38,7 +38,8 @@
 	      	</pentry>
 	      </output>
 	      <unaffected>
-	        <register name="SP"/>
+	        <register name="SP" />
+	        <register name="RAMSTART" />
 	      </unaffected>
 	      <pcode inject="uponentry" dynamic="true" /> <!-- Injected dynamically by PcodeInjectLibraryGlulx -->
 	        <!-- This first range lists the permissible stack offsets

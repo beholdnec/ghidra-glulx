@@ -35,7 +35,6 @@ define token data32 (32)
 ;
 
 define pcodeop fnpush;
-define pcodeop fncall;
 define pcodeop fncalln;
 define pcodeop quit;
 define pcodeop random;
@@ -462,11 +461,9 @@ is inFuncBody=1 & opc=0x81; opc=0x51; _8Operands; LOperand0; LOperand1; LOperand
 :callf LOperand0 SOperand1
 is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; LOperand0; SOperand1 {
 	local oldsp:4 = SP;
-	#local target:4 = LOperand0;
-	#call [target];
-	#OUT = RET;
-	local target:1 = *:1 LOperand0;
-	OUT = fncall(target);
+	local target:4 = LOperand0;
+	call [target];
+	OUT = RET;
 	SP = oldsp;
 	build SOperand1;
 }
@@ -474,12 +471,10 @@ is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; LOperand0; SOperand1 {
 :callfi LOperand0 LOperand1 SOperand2
 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; LOperand0; LOperand1; SOperand2 {
 	local oldsp:4 = SP;
-	#push(LOperand1);
-	#local target:4 = LOperand0;
-	#call [target];
-	#OUT = RET;
-	local target:1 = *:1 LOperand0;
-	OUT = fncall(target, LOperand1);
+	push(LOperand1);
+	local target:4 = LOperand0;
+	call [target];
+	OUT = RET;
 	SP = oldsp;
 	build SOperand2;
 }
@@ -487,13 +482,11 @@ is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; LOperand0; LOperand1; SOperand
 :callfii LOperand0 LOperand1 LOperand2 SOperand3
 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; LOperand0; LOperand1; LOperand2; SOperand3 {
 	local oldsp:4 = SP;
-	#push(LOperand2);
-	#push(LOperand1);
-	#local target:4 = Operand0;
-	#call [target];
-	#OUT = RET;
-	local target:1 = *:1 LOperand0;
-	OUT = fncall(target, LOperand1, LOperand2);
+	push(LOperand2);
+	push(LOperand1);
+	local target:4 = LOperand0;
+	call [target];
+	OUT = RET;
 	SP = oldsp;
 	build SOperand3;
 }
@@ -501,14 +494,12 @@ is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; LOperand0; LOperand1; LOperand
 :callfiii LOperand0 LOperand1 LOperand2 LOperand3 SOperand4
 is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; LOperand0; LOperand1; LOperand2; LOperand3; SOperand4 {
 	local oldsp:4 = SP;
-	#push(LOperand3);
-	#push(LOperand2);
-	#push(LOperand1);
-	#local target:4 = LOperand0;
-	#call [target];
-	#OUT = RET;
-	local target:1 = *:1 LOperand0;
-	OUT = fncall(target, LOperand1, LOperand2, LOperand3);
+	push(LOperand3);
+	push(LOperand2);
+	push(LOperand1);
+	local target:4 = LOperand0;
+	call [target];
+	OUT = RET;
 	SP = oldsp;
 	build SOperand4;
 }

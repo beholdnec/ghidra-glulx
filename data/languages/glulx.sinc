@@ -378,11 +378,19 @@ is inFuncBody=1 & opc=0x4F; _3Operands; LOperand0; LOperand1; LOperand2 {
 	astorebit(LOperand0, LOperand1, LOperand2);
 }
 
+:stkpeek LOperand0 SOperand1
+is inFuncBody=1 & opc=0x51; _2Operands; LOperand0; SOperand1 {
+	build LOperand0;
+	local src:4 = SP - 4 - (4 * LOperand0);
+	OUT = *[vmstack]:4 src;
+	build SOperand1;
+}
+
 :stkcopy LOperand0
 is inFuncBody=1 & opc=0x54; _1Operand; LOperand0 {
 	build LOperand0; # If L1 uses the stack pop mode, the stkcopy is counted after L1 is popped.
 	local count:4 = LOperand0;
-	local src:4 = SP - (4 * count);
+	local src:4 = SP - 4 - (4 * count);
 <loop>
 	if (count == 0) goto inst_next;
 	local val:4 = *[vmstack]:4 src;
@@ -468,6 +476,8 @@ is inFuncBody=1 & opc=0x81; opc=0x60; _2Operands; LOperand0; SOperand1 {
 :callfi LOperand0 LOperand1 SOperand2
 is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; LOperand0; LOperand1; SOperand2 {
 	local oldsp:4 = SP;
+	build LOperand0;
+	build LOperand1;
 	push(LOperand1);
 	local target:4 = LOperand0;
 	call [target];
@@ -479,6 +489,11 @@ is inFuncBody=1 & opc=0x81; opc=0x61; _3Operands; LOperand0; LOperand1; SOperand
 :callfii LOperand0 LOperand1 LOperand2 SOperand3
 is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; LOperand0; LOperand1; LOperand2; SOperand3 {
 	local oldsp:4 = SP;
+	# cragne.ulx contains "callfii pop pop pop push" at 001e7c2e.
+	# These build statements are required to pop operands in the correct order.
+	build LOperand0;
+	build LOperand1;
+	build LOperand2;
 	push(LOperand2);
 	push(LOperand1);
 	local target:4 = LOperand0;
@@ -491,6 +506,10 @@ is inFuncBody=1 & opc=0x81; opc=0x62; _4Operands; LOperand0; LOperand1; LOperand
 :callfiii LOperand0 LOperand1 LOperand2 LOperand3 SOperand4
 is inFuncBody=1 & opc=0x81; opc=0x63; _5Operands; LOperand0; LOperand1; LOperand2; LOperand3; SOperand4 {
 	local oldsp:4 = SP;
+	build LOperand0;
+	build LOperand1;
+	build LOperand2;
+	build LOperand3;
 	push(LOperand3);
 	push(LOperand2);
 	push(LOperand1);

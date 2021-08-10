@@ -37,7 +37,9 @@ define token data32 (32)
 define pcodeop fnpush;
 define pcodeop fncalln;
 define pcodeop quit;
+define pcodeop restart;
 define pcodeop random;
+define pcodeop restore;
 define pcodeop restoreundo;
 define pcodeop gestalt;
 define pcodeop glk;
@@ -362,14 +364,13 @@ is inFuncBody=1 & opc=0x4C; _3Operands; LOperand0; LOperand1; LOperand2 {
 :astores LOperand0 LOperand1 LOperand2
 is inFuncBody=1 & opc=0x4D; _3Operands; LOperand0; LOperand1; LOperand2 {
 	local addr:4 = LOperand0 + 2 * LOperand1;
-	# FIXME: decompilation shows 4 bytes are written
-	*:2 addr = LOperand2;
+	*:2 addr = LOperand2:2;
 }
 
 :astoreb LOperand0 LOperand1 LOperand2
 is inFuncBody=1 & opc=0x4E; _3Operands; LOperand0; LOperand1; LOperand2 {
 	local addr:4 = LOperand0 + LOperand1;
-	*:1 addr = LOperand2;
+	*:1 addr = LOperand2:1;
 }
 
 :astorebit LOperand0 LOperand1 LOperand2
@@ -438,6 +439,18 @@ is inFuncBody=1 & opc=0x81; opc=0x10; _2Operands; LOperand0; SOperand1 {
 is inFuncBody=1 & opc=0x81; opc=0x20 {
 	tmp:4 = quit();
 	return [tmp];
+}
+
+:restart
+is inFuncBody=1 & opc=0x81; opc=0x22 {
+	tmp:4 = restart();
+	return [tmp];
+}
+
+:restore LOperand0 SOperand1
+is inFuncBody=1 & opc=0x81; opc=0x24; _2Operands; LOperand0; SOperand1 {
+	OUT = restore(LOperand0);
+	build SOperand1;
 }
 
 :restoreundo LOperand0
